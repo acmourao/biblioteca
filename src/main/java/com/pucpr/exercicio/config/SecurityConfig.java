@@ -19,10 +19,12 @@ public class SecurityConfig {
     private static final String[] AUTH_WHITELIST = {
             "/v3/api-docs/**",
             "/swagger-ui/**",
-            "/user/**",
-            "/user/",
+            "/user",
+            "/user/login",
             "/api/auth/**",
             "/api/test/**",
+            "/login",
+            "/h2-console/**"
     };
 
     @Autowired
@@ -33,9 +35,10 @@ public class SecurityConfig {
                 .requestMatchers(AUTH_WHITELIST).permitAll()
                 .requestMatchers(HttpMethod.POST, "/api/**").authenticated()
                 .requestMatchers(HttpMethod.GET, "/api/**").authenticated()
-                .requestMatchers(HttpMethod.GET, "/exercicio/helloAdmin/**").hasRole("ADMIN_1")
+                .requestMatchers(HttpMethod.GET, "/admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
         );
+        http.headers(headers -> headers.frameOptions().disable());
         http.addFilterBefore(userAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
         http.csrf(csrf -> csrf.disable());
         return http.build();
