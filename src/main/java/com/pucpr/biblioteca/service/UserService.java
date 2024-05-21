@@ -19,15 +19,15 @@ public class UserService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findByUsername(username);
         if (user == null) {
-            throw new UsernameNotFoundException("");
+            throw new UsernameNotFoundException(null);
         }
         return new MyUserDetails(user);
     }
 
-    public UserDetails loadUserById(long id) throws UsernameNotFoundException {
+    public UserDetails loadUserById(long id) {
         User user = userRepository.findById(id);
         if (user == null) {
-            throw new UsernameNotFoundException("");
+            throw new RuntimeException("Usuário não encontrado para este Id!");
         }
         return new MyUserDetails(user);
     }
