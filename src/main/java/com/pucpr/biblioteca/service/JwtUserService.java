@@ -1,15 +1,15 @@
-package com.pucpr.exercicio.service;
+package com.pucpr.biblioteca.service;
 
-import com.pucpr.exercicio.entity.MyUserDetails;
-import com.pucpr.exercicio.entity.User;
-import com.pucpr.exercicio.repository.UserRepository;
+import com.pucpr.biblioteca.entity.MyUserDetails;
+import com.pucpr.biblioteca.entity.User;
+import com.pucpr.biblioteca.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import com.pucpr.exercicio.dto.LoginUserDTO;
+import com.pucpr.biblioteca.dto.LoginUserDTO;
 
 @Service
 public class JwtUserService {

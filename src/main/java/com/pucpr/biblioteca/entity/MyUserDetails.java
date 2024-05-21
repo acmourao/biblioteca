@@ -1,4 +1,4 @@
-package com.pucpr.exercicio.entity;
+package com.pucpr.biblioteca.entity;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

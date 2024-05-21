@@ -1,6 +1,6 @@
-package com.pucpr.exercicio.config;
+package com.pucpr.biblioteca.config;
 
-import com.pucpr.exercicio.auth.UserAuthenticationFilter;
+import com.pucpr.biblioteca.auth.UserAuthenticationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

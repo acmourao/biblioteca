@@ -1,13 +1,12 @@
-package com.pucpr.exercicio.service;
+package com.pucpr.biblioteca.service;
 
-import com.pucpr.exercicio.entity.MyUserDetails;
-import com.pucpr.exercicio.entity.User;
-import com.pucpr.exercicio.repository.UserRepository;
+import com.pucpr.biblioteca.entity.MyUserDetails;
+import com.pucpr.biblioteca.entity.User;
+import com.pucpr.biblioteca.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -19,7 +18,7 @@ public class UserService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findByUsername(username);
         if(user == null) {
-            throw new UsernameNotFoundException("Could not find user");
+            throw new UsernameNotFoundException("Usuário não cadastrado!");
         }
         return new MyUserDetails(user);
     }

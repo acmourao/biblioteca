@@ -1,8 +1,7 @@
-package com.pucpr.exercicio.service;
+package com.pucpr.biblioteca.service;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
-import org.springframework.boot.autoconfigure.security.oauth2.resource.OAuth2ResourceServerProperties;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;

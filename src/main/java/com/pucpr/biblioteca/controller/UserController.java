@@ -1,12 +1,12 @@
-package com.pucpr.exercicio.controller;
+package com.pucpr.biblioteca.controller;
 
-import com.pucpr.exercicio.dto.LoginUserDTO;
-import com.pucpr.exercicio.entity.User;
-import com.pucpr.exercicio.service.JwtUserService;
+import com.pucpr.biblioteca.dto.LoginUserDTO;
+import com.pucpr.biblioteca.entity.User;
+import com.pucpr.biblioteca.service.JwtUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import com.pucpr.exercicio.repository.UserRepository;
+import com.pucpr.biblioteca.repository.UserRepository;
 
 @RestController
 @RequestMapping("/user")

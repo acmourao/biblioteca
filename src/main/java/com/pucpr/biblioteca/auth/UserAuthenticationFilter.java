@@ -1,8 +1,8 @@
-package com.pucpr.exercicio.auth;
+package com.pucpr.biblioteca.auth;
 
-import com.pucpr.exercicio.entity.MyUserDetails;
-import com.pucpr.exercicio.entity.User;
-import com.pucpr.exercicio.service.JwtTokenService;
+import com.pucpr.biblioteca.entity.MyUserDetails;
+import com.pucpr.biblioteca.entity.User;
+import com.pucpr.biblioteca.service.JwtTokenService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -13,7 +13,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
-import com.pucpr.exercicio.repository.UserRepository;
+import com.pucpr.biblioteca.repository.UserRepository;
 
 import java.io.IOException;
 

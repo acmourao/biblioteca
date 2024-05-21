@@ -1,6 +1,6 @@
-package com.pucpr.exercicio.repository;
+package com.pucpr.biblioteca.repository;
 
-import com.pucpr.exercicio.entity.User;
+import com.pucpr.biblioteca.entity.User;
 import org.springframework.data.repository.CrudRepository;
 
 
