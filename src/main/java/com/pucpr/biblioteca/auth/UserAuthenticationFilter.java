@@ -3,6 +3,7 @@ package com.pucpr.biblioteca.auth;
 import com.pucpr.biblioteca.entity.MyUserDetails;
 import com.pucpr.biblioteca.entity.User;
 import com.pucpr.biblioteca.service.JwtTokenService;
+import com.pucpr.biblioteca.service.UserService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -22,7 +23,7 @@ public class UserAuthenticationFilter extends OncePerRequestFilter {
     @Autowired
     private JwtTokenService jwtTokenService;
     @Autowired 
-    private UserRepository userRepository;
+    private UserService userService;
     
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -30,10 +31,8 @@ public class UserAuthenticationFilter extends OncePerRequestFilter {
         if (token != null) {
             // Recupera o assunto do token
             String subject = jwtTokenService.getSubjectFromToken(token);
-            // Busca o usuário pelo assunto
-            User user = userRepository.findByUsername(subject);
             // Cria um UserDetails com o usuário encontrado
-            MyUserDetails userDetails = new MyUserDetails(user);
+            MyUserDetails userDetails = (MyUserDetails) userService.loadUserByUsername(subject);
             // Cria um objeto de autenticação do Spring Security
             Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails.getUsername(), null, userDetails.getAuthorities());
             // Define o objeto de autenticação no contexto de segurança do Spring Security

@@ -11,7 +11,7 @@ import java.time.ZonedDateTime;
 @Service
 public class JwtTokenService {
     private static final String SECRET = "eyJhbGciOiJIUzI1NiJ9.eyJSb2xlIjoiQWRtaW4iLCJJc3N1ZXIiOiJJc3N1ZXIiLCJVc2VybmFtZSI6IkphdmFJblVzZSIsImV4cCI6MTcxNTEyMDQ1MiwiaWF0IjoxNzE1MTIwNDUyfQ.NNyj_YdnOp0LWpTAmrnNMm_0AnfeOrfa27lRe4tWfZA";
-    private static final String ISSUER = "com.pucpr.exercicio";
+    private static final String ISSUER = "com.pucpr.biblioteca";
 
     public String generateToken(String username) {
         Algorithm algorithm = Algorithm.HMAC256(SECRET);
