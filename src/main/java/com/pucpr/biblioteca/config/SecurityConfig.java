@@ -33,8 +33,6 @@ public class SecurityConfig {
     public SecurityFilterChain filterApiChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(auth -> auth
                 .requestMatchers(AUTH_WHITELIST).permitAll()
-                .requestMatchers(HttpMethod.POST, "/api/**").authenticated()
-                .requestMatchers(HttpMethod.GET, "/api/**").authenticated()
                 .requestMatchers(HttpMethod.GET, "/admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
         );

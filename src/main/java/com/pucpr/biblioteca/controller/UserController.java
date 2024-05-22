@@ -8,7 +8,6 @@ import com.pucpr.biblioteca.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import com.pucpr.biblioteca.repository.UserRepository;
 
 @RestController
 @RequestMapping("/user")
@@ -28,9 +27,9 @@ public class UserController {
     public String authenticateUser(@RequestBody LoginUserDTO loginUserDto) {
         return jwtUserService.authenticateUser(loginUserDto);
     }
-    @GetMapping(value = "/{id}")
-    public ResponseEntity<MyUserDetails> consultaPorId(@PathVariable Long id){
-        MyUserDetails userDetails = (MyUserDetails) userService.loadUserById(id);
-        return ResponseEntity.ok(userDetails);
+
+    @GetMapping(value = "/meusdados")
+    public ResponseEntity<MyUserDetails> consultaMeusDados(){
+        return ResponseEntity.ok(userService.loadUserLogado());
     }
 }

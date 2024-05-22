@@ -9,8 +9,18 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(unique = true)
     private String username;
+
     private String password;
+
+    private String role;
+
+    @Column(unique = true)
+    private String email;
+
+    private String telefone;
 
     public Long getId() {
         return id;
@@ -36,10 +46,6 @@ public class User {
         this.telefone = telefone;
     }
 
-    private String role;
-    private String email;
-    private String telefone;
-    
     // Standard getters and setters
 
     public String getUsername() {

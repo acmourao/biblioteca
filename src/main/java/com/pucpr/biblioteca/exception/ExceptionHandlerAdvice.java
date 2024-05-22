@@ -8,6 +8,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 public class ExceptionHandlerAdvice {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<String> handleException(Exception e) {
-        return ResponseEntity.status(500).body(e.getMessage());
+        return ResponseEntity.status(500).body(":.ERRO DO SISTEMA.:\n\n" +  e.getMessage() + "\n\nLigue para 9393 e fale com o suporte técnico.");
     }
 }
