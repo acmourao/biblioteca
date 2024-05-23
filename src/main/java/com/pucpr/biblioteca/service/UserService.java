@@ -1,6 +1,5 @@
 package com.pucpr.biblioteca.service;
 
-import com.pucpr.biblioteca.auth.AuthenticationFacade;
 import com.pucpr.biblioteca.entity.MyUserDetails;
 import com.pucpr.biblioteca.entity.User;
 import com.pucpr.biblioteca.repository.UserRepository;
@@ -13,13 +12,10 @@ import org.springframework.stereotype.Service;
 public class UserService implements UserDetailsService {
 
     @Autowired
-    private AuthenticationFacade authenticationFacade;
-
-    @Autowired
     private UserRepository userRepository;
 
     @Override
-    public MyUserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public MyUserDetails loadUserByUsername(String username) {
         User user = userRepository.findByUsername(username);
         if (user == null) {
             throw new UsernameNotFoundException(null);
@@ -43,7 +39,7 @@ public class UserService implements UserDetailsService {
         return new MyUserDetails( findUserById(id) );
     }
 
-    public MyUserDetails loadUserLogado() {
-        return ( loadUserByUsername(authenticationFacade.getUsername() ) );
-    }
+//    public User loadUserLogado() {
+//        return ( loadUserByUsername(authenticationFacade.getUsername() ).getUser() );
+//    }
 }

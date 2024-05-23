@@ -1,8 +1,8 @@
 package com.pucpr.biblioteca.controller;
 
 import com.pucpr.biblioteca.dto.LoginUserDTO;
-import com.pucpr.biblioteca.entity.MyUserDetails;
 import com.pucpr.biblioteca.entity.User;
+import com.pucpr.biblioteca.service.JwtTokenService;
 import com.pucpr.biblioteca.service.JwtUserService;
 import com.pucpr.biblioteca.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +14,9 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
     @Autowired
     private JwtUserService jwtUserService;
+
+    @Autowired
+    private JwtTokenService jwtTokenService;
 
     @Autowired
     private UserService userService;
@@ -28,8 +31,9 @@ public class UserController {
         return jwtUserService.authenticateUser(loginUserDto);
     }
 
-    @GetMapping(value = "/meusdados")
-    public ResponseEntity<MyUserDetails> consultaMeusDados(){
-        return ResponseEntity.ok(userService.loadUserLogado());
+    @GetMapping("/meusdados")
+    public ResponseEntity<User> consultaMeusDados() {
+        return ResponseEntity.ok(JwtTokenService.userDetails.user());
     }
+
 }

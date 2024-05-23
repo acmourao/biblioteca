@@ -13,8 +13,6 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/admin")
 public class AdminController {
-    @Autowired
-    private JwtUserService jwtUserService;
 
     @Autowired
     private UserService userService;

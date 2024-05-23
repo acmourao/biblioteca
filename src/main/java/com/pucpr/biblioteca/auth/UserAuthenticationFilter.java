@@ -1,9 +1,7 @@
 package com.pucpr.biblioteca.auth;
 
 import com.pucpr.biblioteca.entity.MyUserDetails;
-import com.pucpr.biblioteca.entity.User;
 import com.pucpr.biblioteca.service.JwtTokenService;
-import com.pucpr.biblioteca.service.UserService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -14,17 +12,15 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
-import com.pucpr.biblioteca.repository.UserRepository;
 
 import java.io.IOException;
+import java.util.Objects;
 
 @Component
 public class UserAuthenticationFilter extends OncePerRequestFilter {
     @Autowired
     private JwtTokenService jwtTokenService;
-    @Autowired 
-    private UserService userService;
-    
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String token = recoveryToken(request);
@@ -32,17 +28,22 @@ public class UserAuthenticationFilter extends OncePerRequestFilter {
             // Recupera o assunto do token
             String subject = jwtTokenService.getSubjectFromToken(token);
             // Cria um UserDetails com o usuário encontrado
-            MyUserDetails userDetails = (MyUserDetails) userService.loadUserByUsername(subject);
-            // Cria um objeto de autenticação do Spring Security
-            Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails.getUsername(), null, userDetails.getAuthorities());
-            // Define o objeto de autenticação no contexto de segurança do Spring Security
-            SecurityContextHolder.getContext().setAuthentication(authentication);
+            //MyUserDetails userDetails = (MyUserDetails) userService.loadUserByUsername(subject);
+            //System.out.print("Subject (usuario) .: " + subject + "\n");
+            //System.out.print("Usuário logado filter.: " + JwtTokenService.userDetails.getUsername() + "\n");
+            if(subject != null) {
+                // Cria um objeto de autenticação do Spring Security
+                Authentication authentication = new UsernamePasswordAuthenticationToken(JwtTokenService.userDetails.getUsername(), null, JwtTokenService.userDetails.getAuthorities());
+                // Define o objeto de autenticação no contexto de segurança do Spring Security
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+            }
         }
         filterChain.doFilter(request, response);
     }
+
     private String recoveryToken(HttpServletRequest request) {
         String authorizationHeader = request.getHeader("Authorization");
-        if(authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
+        if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
             return authorizationHeader.replace("Bearer ", "");
         }
         return null;

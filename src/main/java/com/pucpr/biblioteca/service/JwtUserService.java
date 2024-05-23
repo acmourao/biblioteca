@@ -13,26 +13,28 @@ import com.pucpr.biblioteca.dto.LoginUserDTO;
 
 @Service
 public class JwtUserService {
+
     @Autowired
     private UserRepository userRepository;
 
     @Autowired
     PasswordEncoder passwordEncoder;
-    
+
     @Autowired
     AuthenticationManager authenticationManager;
-    
-    @Autowired JwtTokenService tokenService;
 
-    public String authenticateUser(LoginUserDTO loginUserDTO){
-        UsernamePasswordAuthenticationToken token = 
+    @Autowired
+    JwtTokenService tokenService;
+
+    public String authenticateUser(LoginUserDTO loginUserDTO) {
+        UsernamePasswordAuthenticationToken token =
                 new UsernamePasswordAuthenticationToken(loginUserDTO.username(), loginUserDTO.password());
         Authentication authentication = authenticationManager.authenticate(token);
         MyUserDetails userDetails = (MyUserDetails) authentication.getPrincipal();
-        return tokenService.generateToken(userDetails.getUsername());
+        return tokenService.generateToken(userDetails);
     }
 
-    public User createUser(User user){
+    public User createUser(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
     }
