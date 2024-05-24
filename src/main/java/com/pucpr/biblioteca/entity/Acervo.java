@@ -8,6 +8,10 @@ import java.time.Year;
 @Table(indexes = @Index(columnList = "autor,publicacao"))
 public class Acervo {
 
+    public Acervo() {
+        setActive(true);
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -22,14 +26,7 @@ public class Acervo {
     @ManyToOne
     private Categoria categoria;
 
-    public Acervo() {
-    }
-
-    public Acervo(String titulo, String autor, Categoria categoria) {
-        this.titulo = titulo;
-        this.autor = autor;
-        this.categoria = categoria;
-    }
+    private Boolean active;
 
     public Long getId() {
         return id;
@@ -69,5 +66,13 @@ public class Acervo {
 
     public void setPublicacao(int publicacao) {
         this.publicacao = publicacao;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 }

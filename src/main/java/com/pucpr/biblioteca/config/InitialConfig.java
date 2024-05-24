@@ -44,6 +44,7 @@ public class InitialConfig {
             acervo2.setAutor("Cerbasi, Gustavo Petrasunas");
             acervo2.setCategoria(categoriaRepository.findById(1).orElse(null));
             acervo2.setPublicacao(2010);
+            acervo2.setActive(false);
             acervoRepository.save(acervo2);
 
             Acervo acervo3 = new Acervo();
