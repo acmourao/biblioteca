@@ -1,6 +1,5 @@
 package com.pucpr.biblioteca.service;
 
-import com.pucpr.biblioteca.entity.MyUserDetails;
 import com.pucpr.biblioteca.entity.User;
 import com.pucpr.biblioteca.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,8 +29,8 @@ public class JwtUserService {
         UsernamePasswordAuthenticationToken token =
                 new UsernamePasswordAuthenticationToken(loginUserDTO.username(), loginUserDTO.password());
         Authentication authentication = authenticationManager.authenticate(token);
-        MyUserDetails userDetails = (MyUserDetails) authentication.getPrincipal();
-        return tokenService.generateToken(userDetails);
+//        MyUserDetails userDetails = (MyUserDetails) authentication.getPrincipal();
+        return tokenService.generateToken(authentication.getName());
     }
 
     public User createUser(User user) {

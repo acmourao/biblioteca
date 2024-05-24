@@ -38,7 +38,6 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.GET, "/admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
         );
-        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.headers(headers -> headers.frameOptions().disable());
         http.addFilterBefore(userAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
         http.csrf(csrf -> csrf.disable());

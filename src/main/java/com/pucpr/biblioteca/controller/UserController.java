@@ -33,7 +33,7 @@ public class UserController {
 
     @GetMapping("/meusdados")
     public ResponseEntity<User> consultaMeusDados() {
-        return ResponseEntity.ok(JwtTokenService.userDetails.user());
+        return ResponseEntity.ok(userService.getUserLogado());
     }
 
 }
