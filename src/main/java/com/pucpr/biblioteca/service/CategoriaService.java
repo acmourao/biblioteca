@@ -17,7 +17,7 @@ public class CategoriaService {
         return categoriaRepository.findByOrderByIdAsc();
     }
 
-    public Categoria findById(Long id) {
+    public Categoria findById(int id) {
         return categoriaRepository
                 .findById(id)
                 .orElse(null);

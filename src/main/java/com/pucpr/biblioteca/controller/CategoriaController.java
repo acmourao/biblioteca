@@ -14,12 +14,12 @@ public class CategoriaController {
     private CategoriaService categoriaService;
 
     @GetMapping
-    public ResponseEntity< Iterable<Categoria> > findAll(){
+    public ResponseEntity< Iterable<Categoria> > consultaTodasCategorias(){
         Iterable<Categoria> categorias = categoriaService.findAll();
         return ResponseEntity.ok(categorias);
     }
     @GetMapping(value = "/{id}")
-    public ResponseEntity<Categoria> findById(@PathVariable Long id) {
+    public ResponseEntity<Categoria> findById(@PathVariable int id) {
         return ResponseEntity.ok( categoriaService.findById(id) );
     }
 }
