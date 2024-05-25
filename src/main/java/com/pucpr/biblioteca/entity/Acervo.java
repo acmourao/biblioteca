@@ -7,8 +7,15 @@ import jakarta.persistence.*;
 @Table(indexes = @Index(columnList = "autor,publicacao"))
 public class Acervo {
 
+    public Acervo(String titulo, String autor, int publicacao, Categoria categoria) {
+        this.titulo = titulo;
+        this.autor = autor;
+        this.publicacao = publicacao;
+        this.categoria = categoria;
+        this.active = true;
+    }
+
     public Acervo() {
-        setActive(true);
     }
 
     @Id

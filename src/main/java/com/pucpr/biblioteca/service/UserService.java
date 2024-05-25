@@ -2,7 +2,7 @@ package com.pucpr.biblioteca.service;
 
 import com.pucpr.biblioteca.auth.AuthenticationFacade;
 import com.pucpr.biblioteca.entity.Acervo;
-import com.pucpr.biblioteca.entity.MyUserDetails;
+import com.pucpr.biblioteca.dto.MyUserDetails;
 import com.pucpr.biblioteca.entity.User;
 import com.pucpr.biblioteca.repository.AcervoRepository;
 import com.pucpr.biblioteca.repository.UserRepository;
@@ -18,9 +18,6 @@ public class UserService implements UserDetailsService {
     private UserRepository userRepository;
 
     @Autowired
-    private AcervoRepository acervoRepository;
-
-    @Autowired
     private AuthenticationFacade authenticationFacade;
 
     @Override
@@ -34,10 +31,6 @@ public class UserService implements UserDetailsService {
 
     public Iterable<User> findAllUsers() {
         return userRepository.findAll();
-    }
-
-    public Iterable<Acervo> locacoes() {
-        return findById(getUserLogado().getId()).getAcervo();
     }
 
     public MyUserDetails findUserDetailById(Long id) {

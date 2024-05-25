@@ -1,5 +1,6 @@
 package com.pucpr.biblioteca.service;
 
+import com.pucpr.biblioteca.dto.AcervoDTO;
 import com.pucpr.biblioteca.entity.Acervo;
 import com.pucpr.biblioteca.entity.Categoria;
 import com.pucpr.biblioteca.repository.AcervoRepository;
@@ -17,11 +18,20 @@ public class AcervoService {
     @Autowired
     private CategoriaService categoriaService;
 
+    public Acervo addAcervo(AcervoDTO acervoDTO) {
+        Acervo acervo = new Acervo(
+                acervoDTO.titulo(),
+                acervoDTO.autor(),
+                acervoDTO.publicacao(),
+                categoriaService.findById(acervoDTO.categoria()));
+        return acervoRepository.save(acervo);
+    }
+
     public Iterable<Acervo> findByOrderByTituloAsc() {
         return acervoRepository.findByOrderByTituloAsc(Limit.of(5));
     }
 
-    public Iterable<Acervo> findAllEmprestados() {
+    public Iterable<Acervo> findAllIndisponiveis() {
         return acervoRepository.findByActiveFalseOrderByIdAsc();
     }
 
@@ -31,9 +41,6 @@ public class AcervoService {
 
     public Iterable<Acervo> findByCategoria(int id) throws ServiceException {
         Categoria categoria = categoriaService.findById(id);
-        if (categoria == null) {
-            throw new ServiceException("Categoria Id não encontrado!");
-        }
         return acervoRepository.findByCategoria(categoria);
     }
 
@@ -51,12 +58,12 @@ public class AcervoService {
                 .orElse(null);
     }
 
-    public Acervo liberarBloquearById(Long id, int status) throws ServiceException {
+    public Acervo setStatusById(Long id, boolean status) throws ServiceException {
         Acervo acervo = findById(id);
         if (acervo == null) {
             throw new ServiceException("Título Id não encontrado!");
         }
-        acervo.setActive(status==1);
+        acervo.setActive(status);
         acervoRepository.save(acervo);
         return acervo;
     }

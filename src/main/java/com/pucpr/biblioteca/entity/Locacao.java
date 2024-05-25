@@ -1,15 +1,14 @@
 package com.pucpr.biblioteca.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
-import java.util.Date;
 
 @Entity
 @Table(indexes = @Index(columnList = "emprestimo,devolucao"))
 
 public class Locacao {
+
     public Locacao() {
         setActive(true);
     }

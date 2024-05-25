@@ -1,9 +1,8 @@
 package com.pucpr.biblioteca.controller;
 
 import com.pucpr.biblioteca.dto.LocacaoDTO;
-import com.pucpr.biblioteca.entity.Acervo;
+import com.pucpr.biblioteca.dto.MyUserDetails;
 import com.pucpr.biblioteca.entity.Locacao;
-import com.pucpr.biblioteca.entity.MyUserDetails;
 import com.pucpr.biblioteca.entity.User;
 import com.pucpr.biblioteca.service.AcervoService;
 import com.pucpr.biblioteca.service.LocacaoService;
@@ -20,42 +19,33 @@ public class AdminController {
     private UserService userService;
 
     @Autowired
-    private AcervoService acervoService;
+    private LocacaoService locacaoService;
 
     @Autowired
-    private LocacaoService locacaoService;
+    private AcervoService acervoService;
 
     @GetMapping(value = "/users")
     public ResponseEntity< Iterable<User> > consultaTodosUsuarios(){
         Iterable<User> users = userService.findAllUsers();
         return ResponseEntity.ok(users);
     }
-    @GetMapping(value = "/detail/{id}")
+    @GetMapping(value = "/user/detail/{id}")
     public ResponseEntity<MyUserDetails> consultaDetailPorId(@PathVariable Long id){
         return ResponseEntity.ok( userService.findUserDetailById(id) );
     }
+
     @GetMapping(value = "/user/{id}")
     public ResponseEntity<User> consultaUserPorId(@PathVariable Long id){
          return ResponseEntity.ok( userService.findById(id) );
     }
 
-    @PostMapping("/emprestar")
+    @PostMapping("/emprestarAcervo")
     public Locacao emprestarAcervo(@RequestBody LocacaoDTO locacaoDTO) {
         return locacaoService.emprestarAcervo(locacaoDTO);
     }
 
-    @PostMapping("/devolver/{id}")
+    @PostMapping("/devolverAcervo/{id}")
     public Locacao devolverAcervo(@PathVariable Long id) {
         return locacaoService.devolverAcervo(id);
-    }
-
-    @GetMapping(value = "/emprestados")
-    public ResponseEntity< Iterable<Acervo> > findAllActives(){
-        Iterable<Acervo> acervos = acervoService.findAllEmprestados();
-        return ResponseEntity.ok(acervos);
-    }
-    @PostMapping(value = "/liberarBloquear/{id}", consumes = "application/json")
-    public ResponseEntity<Acervo> liberaBloqueiaById(@PathVariable Long id, @RequestBody int status) {
-        return ResponseEntity.ok( acervoService.liberarBloquearById(id, status) );
     }
 }

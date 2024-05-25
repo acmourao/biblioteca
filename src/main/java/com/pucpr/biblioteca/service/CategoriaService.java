@@ -13,6 +13,11 @@ public class CategoriaService {
     @Autowired
     private CategoriaRepository categoriaRepository;
 
+    public Categoria addCategoria(String tipo) {
+        Categoria categoria = new Categoria(tipo);
+        return categoriaRepository.save(categoria);
+    }
+
     public Iterable<CategoriaDTO> findAll() {
         //repository.findAll(Sort.by(Sort.Direction.DESC, "colName").ignoreCase());
         //List<Passenger> passengers = repository.findAll(Sort.by(Sort.Direction.ASC, "seatNumber"));

@@ -9,6 +9,17 @@ import java.util.List;
 @Table(name = "usuarios")
 public class User {
 
+    public User(String username, String password, String role, String email, String telefone) {
+        this.username = username;
+        this.password = password;
+        this.role = role;
+        this.email = email;
+        this.telefone = telefone;
+    }
+
+    public User() {
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -24,18 +35,6 @@ public class User {
     private String email;
 
     private String telefone;
-
-    @OneToMany(fetch = FetchType.LAZY)
-    private List<Acervo> acervo;
-
-    @JsonManagedReference(value = "user")
-    public List<Acervo> getAcervo() {
-        return acervo;
-    }
-
-    public void setAcervo(List<Acervo> acervo) {
-        this.acervo = acervo;
-    }
 
     public Long getId() {
         return id;

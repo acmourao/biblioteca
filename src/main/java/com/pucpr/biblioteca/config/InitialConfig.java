@@ -6,12 +6,18 @@ import com.pucpr.biblioteca.entity.User;
 import com.pucpr.biblioteca.repository.AcervoRepository;
 import com.pucpr.biblioteca.repository.CategoriaRepository;
 import com.pucpr.biblioteca.repository.UserRepository;
+import com.pucpr.biblioteca.service.CategoriaService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
 @Component
 public class InitialConfig {
+
+    @Autowired
+    private CategoriaService categoriaService;
+
     @Bean
     public CommandLineRunner loadInitialData(CategoriaRepository categoriaRepository, UserRepository userRepository, AcervoRepository acervoRepository) {
         return (args) -> {
@@ -24,41 +30,40 @@ public class InitialConfig {
             categoriaRepository.save(new Categoria("ABSTRATO"));
             categoriaRepository.save(new Categoria("OUTROS"));
 
-            User user = new User();
-            user.setUsername("anderson");
-            user.setEmail("aaaaaaaa@gmail.com");
-            user.setPassword("$2a$10$8.dlQ/tekBWcBH5Wls.fVO2yV3O264Na1ZxROaLDtgtJAiM8.liP6");
-            user.setRole("ROLE_ADMIN");
-            user.setTelefone("61999999999");
-            userRepository.save(user);
+            userRepository.save(new User(
+                    "anderson",
+                    "$2a$10$8.dlQ/tekBWcBH5Wls.fVO2yV3O264Na1ZxROaLDtgtJAiM8.liP6",
+                    "ROLE_ADMIN",
+                    "aaaaaaaa@gmail.com",
+                    "61999999999"));
 
-            Acervo acervo1 = new Acervo();
-            acervo1.setTitulo("Arquiteturas de TI");
-            acervo1.setAutor("Equipe redação do Caderno de Inovação");
-            acervo1.setCategoria(categoriaRepository.findById(1).orElse(null));
-            acervo1.setPublicacao(2013);
+            Acervo acervo1 = new Acervo(
+                    "Arquiteturas de TI",
+                    "Equipe redação do Caderno de Inovação",
+                    2013,
+                    categoriaService.findById(1));
             acervoRepository.save(acervo1);
 
-            Acervo acervo2 = new Acervo();
-            acervo2.setTitulo("Dinheiro: os segredos de quem tem");
-            acervo2.setAutor("Cerbasi, Gustavo Petrasunas");
-            acervo2.setCategoria(categoriaRepository.findById(1).orElse(null));
-            acervo2.setPublicacao(2010);
+            Acervo acervo2 = new Acervo(
+                    "Dinheiro: os segredos de quem tem",
+                    "Cerbasi, Gustavo Petrasunas",
+                    2010,
+                    categoriaService.findById(1));
             acervo2.setActive(false);
             acervoRepository.save(acervo2);
 
-            Acervo acervo3 = new Acervo();
-            acervo3.setTitulo("Brasília");
-            acervo3.setAutor("Companhia Urbanizadora da Nova Capital do Brasil");
-            acervo3.setCategoria(categoriaRepository.findById(3).orElse(null));
-            acervo3.setPublicacao(1957);
+            Acervo acervo3 = new Acervo(
+                    "Brasília",
+                    "Companhia Urbanizadora da Nova Capital do Brasil",
+                    1957,
+                    categoriaService.findById(3));
             acervoRepository.save(acervo3);
 
-            Acervo acervo4 = new Acervo();
-            acervo4.setTitulo("Indexação de revistas");
-            acervo4.setAutor("Universidade do Minho");
-            acervo4.setCategoria(categoriaRepository.findById(2).orElse(null));
-            acervo4.setPublicacao(2022);
+            Acervo acervo4 = new Acervo(
+                    "Indexação de revistas",
+                    "Universidade do Minho",
+                    2022,
+                    categoriaService.findById(2));
             acervoRepository.save(acervo4);
 
         };

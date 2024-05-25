@@ -15,8 +15,8 @@ public class LocacaoController {
     private LocacaoService locacaoService;
 
     @GetMapping
-    public ResponseEntity<Iterable<Locacao>> findAllDevolucoesPendentes() {
-        Iterable<Locacao> locacoes = locacaoService.findAllDevolucoesPendentes();
+    public ResponseEntity<Iterable<Locacao>> findPendentesAllUsers() {
+        Iterable<Locacao> locacoes = locacaoService.findPendentesAllUsers();
         return ResponseEntity.ok(locacoes);
     }
 
@@ -26,9 +26,20 @@ public class LocacaoController {
     }
 
     @GetMapping(value = "/acervo/{id}")
-    public ResponseEntity<Iterable<Locacao>> findAcervoByUserId(@PathVariable Long id) {
+    public ResponseEntity<Iterable<Locacao>> findAllbyAcervo(@PathVariable Long id) {
         Iterable<Locacao> locacoes = locacaoService.findAllByAcervo(id);
         return ResponseEntity.ok(locacoes);
+    }
+
+    @GetMapping(value = "/user/{id}")
+    public ResponseEntity<Iterable<Locacao>> findAllByUser(@PathVariable Long id) {
+        Iterable<Locacao> locacoes = locacaoService.findAllByUser(id);
+        return ResponseEntity.ok(locacoes);
+    }
+
+    @PostMapping("/emprestarAcervoUserLogado/{id}")
+    public Locacao emprestarAcervoUserLogado(@PathVariable Long id) {
+        return locacaoService.emprestarAcervoUserLogado(id);
     }
 
 }

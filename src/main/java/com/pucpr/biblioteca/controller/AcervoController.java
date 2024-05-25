@@ -1,5 +1,6 @@
 package com.pucpr.biblioteca.controller;
 
+import com.pucpr.biblioteca.dto.AcervoDTO;
 import com.pucpr.biblioteca.entity.Acervo;
 import com.pucpr.biblioteca.service.AcervoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,9 +14,25 @@ public class AcervoController {
     @Autowired
     private AcervoService acervoService;
 
-    @GetMapping
-    public ResponseEntity< Iterable<Acervo> > findAllLimit(){
+    @PostMapping
+    public Acervo addAcervo(@RequestBody AcervoDTO acervoDTO) {
+        return acervoService.addAcervo(acervoDTO);
+    }
+
+    @GetMapping(value = "/{id}")
+    public ResponseEntity<Acervo> findById(@PathVariable Long id) {
+        return ResponseEntity.ok( acervoService.findById(id) );
+    }
+
+    @GetMapping(value = "/disponiveis")
+    public ResponseEntity< Iterable<Acervo> > findAllActivesLimit(){
         Iterable<Acervo> acervos = acervoService.findByOrderByTituloAsc();
+        return ResponseEntity.ok(acervos);
+    }
+
+    @GetMapping(value = "/indisponiveis")
+    public ResponseEntity< Iterable<Acervo> > findAllOut(){
+        Iterable<Acervo> acervos = acervoService.findAllIndisponiveis();
         return ResponseEntity.ok(acervos);
     }
 
@@ -43,9 +60,10 @@ public class AcervoController {
         return ResponseEntity.ok(acervos);
     }
 
-    @GetMapping(value = "/{id}")
-    public ResponseEntity<Acervo> findById(@PathVariable Long id) {
-        return ResponseEntity.ok( acervoService.findById(id) );
+    @PostMapping(value = "/liberarBloquear/{id}", consumes = "application/json")
+    public ResponseEntity<Acervo> liberaBloqueiaById(@PathVariable Long id, @RequestBody boolean status) {
+        return ResponseEntity.ok( acervoService.setStatusById(id, status) );
     }
+
 
 }

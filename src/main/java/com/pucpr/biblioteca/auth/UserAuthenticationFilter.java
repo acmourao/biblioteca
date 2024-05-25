@@ -1,6 +1,6 @@
 package com.pucpr.biblioteca.auth;
 
-import com.pucpr.biblioteca.entity.MyUserDetails;
+import com.pucpr.biblioteca.dto.MyUserDetails;
 import com.pucpr.biblioteca.service.JwtTokenService;
 import com.pucpr.biblioteca.service.UserService;
 import jakarta.servlet.FilterChain;
