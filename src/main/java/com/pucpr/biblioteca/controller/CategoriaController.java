@@ -1,5 +1,6 @@
 package com.pucpr.biblioteca.controller;
 
+import com.pucpr.biblioteca.dto.CategoriaDTO;
 import com.pucpr.biblioteca.entity.Categoria;
 import com.pucpr.biblioteca.service.CategoriaService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,8 +15,8 @@ public class CategoriaController {
     private CategoriaService categoriaService;
 
     @GetMapping
-    public ResponseEntity< Iterable<Categoria> > consultaTodasCategorias(){
-        Iterable<Categoria> categorias = categoriaService.findAll();
+    public ResponseEntity< Iterable<CategoriaDTO> > consultaTodasCategorias(){
+        Iterable<CategoriaDTO> categorias = categoriaService.findAll();
         return ResponseEntity.ok(categorias);
     }
     @GetMapping(value = "/{id}")

@@ -1,11 +1,14 @@
 package com.pucpr.biblioteca.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+
+import java.util.List;
 
 @Entity
 @Table(name = "usuarios")
 public class User {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -21,6 +24,18 @@ public class User {
     private String email;
 
     private String telefone;
+
+    @OneToMany(fetch = FetchType.LAZY)
+    private List<Acervo> acervo;
+
+    @JsonManagedReference(value = "user")
+    public List<Acervo> getAcervo() {
+        return acervo;
+    }
+
+    public void setAcervo(List<Acervo> acervo) {
+        this.acervo = acervo;
+    }
 
     public Long getId() {
         return id;

@@ -1,8 +1,7 @@
 package com.pucpr.biblioteca.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-
-import java.time.Year;
 
 @Entity
 @Table(indexes = @Index(columnList = "autor,publicacao"))
@@ -23,7 +22,8 @@ public class Acervo {
 
     private int publicacao;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
     private Categoria categoria;
 
     private Boolean active;
@@ -68,11 +68,11 @@ public class Acervo {
         this.publicacao = publicacao;
     }
 
-    public boolean isActive() {
+    public Boolean getActive() {
         return active;
     }
 
-    public void setActive(boolean active) {
+    public void setActive(Boolean active) {
         this.active = active;
     }
 }

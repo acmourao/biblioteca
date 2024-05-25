@@ -29,8 +29,8 @@ public class AcervoService {
         return acervoRepository.findByPublicacao(ano);
     }
 
-    public Iterable<Acervo> findByCategoria(int idCategoria) throws ServiceException {
-        Categoria categoria = categoriaService.findById(idCategoria);
+    public Iterable<Acervo> findByCategoria(int id) throws ServiceException {
+        Categoria categoria = categoriaService.findById(id);
         if (categoria == null) {
             throw new ServiceException("Categoria Id não encontrado!");
         }
@@ -51,7 +51,7 @@ public class AcervoService {
                 .orElse(null);
     }
 
-    public Acervo liberaBloqueiaById(Long id, int status) throws ServiceException {
+    public Acervo liberarBloquearById(Long id, int status) throws ServiceException {
         Acervo acervo = findById(id);
         if (acervo == null) {
             throw new ServiceException("Título Id não encontrado!");

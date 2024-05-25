@@ -1,6 +1,9 @@
 package com.pucpr.biblioteca.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+
+import java.util.List;
 
 @Entity
 //@Table(name = "categoria")
@@ -18,6 +21,18 @@ public class Categoria {
 
     public Categoria(String tipo) {
         this.tipo = tipo;
+    }
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "categoria")
+    private List<Acervo> acervo;
+
+    @JsonManagedReference(value = "categoria")
+    public List<Acervo> getAcervo() {
+        return acervo;
+    }
+
+    public void setAcervo(List<Acervo> acervo) {
+        this.acervo = acervo;
     }
 
     public String getTipo() {

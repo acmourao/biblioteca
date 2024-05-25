@@ -1,10 +1,10 @@
 package com.pucpr.biblioteca.service;
 
 import java.time.LocalDate;
+import com.pucpr.biblioteca.auth.AuthenticationFacade;
 import com.pucpr.biblioteca.dto.LocacaoDTO;
 import com.pucpr.biblioteca.entity.Acervo;
 import com.pucpr.biblioteca.entity.Locacao;
-import com.pucpr.biblioteca.entity.User;
 import com.pucpr.biblioteca.repository.LocacaoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,29 +16,33 @@ public class LocacaoService {
     private LocacaoRepository locacaoRepository;
 
     @Autowired
-    private UserService userService;
-
-    @Autowired
     private AcervoService acervoService;
 
+    @Autowired
+    private UserService userService;
+
     public Iterable<Locacao> findAllDevolucoesPendentes() {
-        return locacaoRepository.findByActiveTrueOrderByIdAsc();
+        return locacaoRepository.findByOrderByIdAsc();
     }
 
-    public Iterable<Locacao> findAllActiveByUser(Long id) {
-        User user = userService.findById(id);
-        return locacaoRepository.findByActiveTrueAndUserOrderByIdAsc(user);
-    }
-
-    public Iterable<Locacao> findAllActiveByAcervo(Long id) {
+    public Iterable<Locacao> findAllByAcervo(Long id) {
         Acervo acervo = acervoService.findById(id);
-        return locacaoRepository.findByActiveTrueAndAcervoOrderByIdAsc(acervo);
+        return locacaoRepository.findByAcervoOrderByIdAsc(acervo);
     }
 
     public Locacao emprestarAcervo(LocacaoDTO locacaoDTO) {
         Locacao locacao = new Locacao();
-        locacao.setUser(userService.findById( locacaoDTO.usuario() ) );
         locacao.setAcervo(acervoService.findById(locacaoDTO.acervo()));
+        locacao.setUser(userService.findById(locacaoDTO.usuario()));
+        locacao.setEmprestimo(currentDate());
+        locacao.setDevolucao(expirationDate());
+        return locacaoRepository.save(locacao);
+    }
+
+    public Locacao emprestarLogado(Long id) {
+        Locacao locacao = new Locacao();
+        locacao.setAcervo(acervoService.findById(id));
+        locacao.setUser(userService.getUserLogado());
         locacao.setEmprestimo(currentDate());
         locacao.setDevolucao(expirationDate());
         return locacaoRepository.save(locacao);
@@ -48,6 +52,7 @@ public class LocacaoService {
         Locacao locacao = findById(id);
         //verificar se está vencido a data devoluçao
         locacao.setDevolucao(currentDate());
+        locacao.setActive(false);
         return locacaoRepository.save(locacao);
     }
 

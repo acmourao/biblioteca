@@ -1,15 +1,15 @@
 package com.pucpr.biblioteca.service;
 
+import com.pucpr.biblioteca.auth.AuthenticationFacade;
+import com.pucpr.biblioteca.entity.Acervo;
 import com.pucpr.biblioteca.entity.MyUserDetails;
 import com.pucpr.biblioteca.entity.User;
+import com.pucpr.biblioteca.repository.AcervoRepository;
 import com.pucpr.biblioteca.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Service
 public class UserService implements UserDetailsService {
@@ -17,11 +17,12 @@ public class UserService implements UserDetailsService {
     @Autowired
     private UserRepository userRepository;
 
-    //    @Override
-//    public MyUserDetails loadUserByUsername(String username) {
-//        Optional<User> user = Optional.ofNullable(userRepository.findByUsername(username));
-//        return new MyUserDetails(user);
-//    }
+    @Autowired
+    private AcervoRepository acervoRepository;
+
+    @Autowired
+    private AuthenticationFacade authenticationFacade;
+
     @Override
     public MyUserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findByUsername(username);
@@ -35,6 +36,10 @@ public class UserService implements UserDetailsService {
         return userRepository.findAll();
     }
 
+    public Iterable<Acervo> locacoes() {
+        return findById(getUserLogado().getId()).getAcervo();
+    }
+
     public MyUserDetails findUserDetailById(Long id) {
         return new MyUserDetails(findById(id));
     }
@@ -42,12 +47,10 @@ public class UserService implements UserDetailsService {
     public User findById(Long id) {
         return userRepository
                 .findById(id)
-                .orElse(null);
+                .orElseThrow();
     }
 
     public User getUserLogado() {
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        System.out.print("\nUsuário Logado .: " + username + "\n");
-        return userRepository.findByUsername(username);
+        return authenticationFacade.getUser();
     }
 }

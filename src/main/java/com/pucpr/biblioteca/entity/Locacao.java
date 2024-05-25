@@ -1,5 +1,6 @@
 package com.pucpr.biblioteca.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -7,8 +8,8 @@ import java.util.Date;
 
 @Entity
 @Table(indexes = @Index(columnList = "emprestimo,devolucao"))
-public class Locacao {
 
+public class Locacao {
     public Locacao() {
         setActive(true);
     }
@@ -18,10 +19,10 @@ public class Locacao {
     private Long id;
 
     @ManyToOne
-    private User user;
+    private Acervo acervo;
 
     @ManyToOne
-    private Acervo acervo;
+    private User user;
 
     private LocalDate emprestimo;
     private LocalDate devolucao;
@@ -36,6 +37,14 @@ public class Locacao {
         this.id = id;
     }
 
+    public Acervo getAcervo() {
+        return acervo;
+    }
+
+    public void setAcervo(Acervo acervo) {
+        this.acervo = acervo;
+    }
+
     public User getUser() {
         return user;
     }
@@ -44,12 +53,12 @@ public class Locacao {
         this.user = user;
     }
 
-    public Acervo getAcervo() {
-        return acervo;
+    public Boolean getActive() {
+        return active;
     }
 
-    public void setAcervo(Acervo acervo) {
-        this.acervo = acervo;
+    public void setActive(Boolean active) {
+        this.active = active;
     }
 
     public LocalDate getEmprestimo() {
@@ -68,11 +77,4 @@ public class Locacao {
         this.devolucao = devolucao;
     }
 
-    public boolean isActive() {
-        return active;
-    }
-
-    public void setActive(boolean active) {
-        this.active = active;
-    }
 }

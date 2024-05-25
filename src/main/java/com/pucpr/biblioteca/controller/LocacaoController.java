@@ -25,26 +25,10 @@ public class LocacaoController {
         return ResponseEntity.ok(locacaoService.findById(id));
     }
 
-    @GetMapping(value = "/user/{id}")
-    public ResponseEntity<Iterable<Locacao>> findPendenciasByUserId(@PathVariable Long id) {
-        Iterable<Locacao> locacoes = locacaoService.findAllActiveByUser(id);
-        return ResponseEntity.ok(locacoes);
-    }
-
     @GetMapping(value = "/acervo/{id}")
     public ResponseEntity<Iterable<Locacao>> findAcervoByUserId(@PathVariable Long id) {
-        Iterable<Locacao> locacoes = locacaoService.findAllActiveByAcervo(id);
+        Iterable<Locacao> locacoes = locacaoService.findAllByAcervo(id);
         return ResponseEntity.ok(locacoes);
-    }
-
-    @PostMapping("/emprestar")
-    public Locacao emprestarAcervo(@RequestBody LocacaoDTO locacaoDTO) {
-        return locacaoService.emprestarAcervo(locacaoDTO);
-    }
-
-    @PostMapping("/devolver/{id}")
-    public Locacao devolverAcervo(@PathVariable Long id) {
-        return locacaoService.devolverAcervo(id);
     }
 
 }

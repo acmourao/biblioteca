@@ -1,5 +1,6 @@
 package com.pucpr.biblioteca.service;
 
+import com.pucpr.biblioteca.dto.UserDTO;
 import com.pucpr.biblioteca.entity.User;
 import com.pucpr.biblioteca.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,8 +34,13 @@ public class JwtUserService {
         return tokenService.generateToken(authentication.getName());
     }
 
-    public User createUser(User user) {
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+    public User createUser(UserDTO userDTO) {
+        User user = new User();
+        user.setUsername(userDTO.username());
+        user.setRole(userDTO.role());
+        user.setEmail(userDTO.email());
+        user.setTelefone(userDTO.telefone());
+        user.setPassword(passwordEncoder.encode(userDTO.password()));
         return userRepository.save(user);
     }
 }
