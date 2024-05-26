@@ -31,11 +31,11 @@ public class InitialConfig {
             categoriaRepository.save(new Categoria("OUTROS"));
 
             userRepository.save(new User(
-                    "anderson",
-                    "$2a$10$8.dlQ/tekBWcBH5Wls.fVO2yV3O264Na1ZxROaLDtgtJAiM8.liP6",
+                    "administrador",
+                    "$2a$10$xtfayZf0FXUuz2HdCAe/puvhcpEtierSF5wp4knBulreepSbRopP6",
                     "ROLE_ADMIN",
-                    "aaaaaaaa@gmail.com",
-                    "61999999999"));
+                    "administrador@live.com",
+                    "8599999999"));
 
             Acervo acervo1 = new Acervo(
                     "Arquiteturas de TI",

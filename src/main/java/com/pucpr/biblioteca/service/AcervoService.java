@@ -27,29 +27,41 @@ public class AcervoService {
         return acervoRepository.save(acervo);
     }
 
-    public Iterable<Acervo> findByOrderByTituloAsc() {
-        return acervoRepository.findByOrderByTituloAsc(Limit.of(5));
+    public Iterable<Acervo> findAll(int limit) {
+        return acervoRepository.findByOrderByIdAsc(Limit.of(limit));
     }
 
-    public Iterable<Acervo> findAllIndisponiveis() {
-        return acervoRepository.findByActiveFalseOrderByIdAsc();
+    public Acervo isDisponiveis(Long id) {
+        return acervoRepository.getAcervoByIdActive(id);
+    }
+
+    public Iterable<Acervo> findAllDisponiveis(int limit) {
+        return acervoRepository.findByActiveTrueOrderByIdAsc(Limit.of(limit));
+    }
+
+    public Iterable<Acervo> findByOrderByTituloAsc(int limit) {
+        return acervoRepository.findByActiveTrueOrderByTituloAsc(Limit.of(limit));
+    }
+
+    public Iterable<Acervo> findIndisponiveis() {
+        return acervoRepository.findByActiveFalseOrderByIdAsc(Limit.of(10));
     }
 
     public Iterable<Acervo> findByPublicacao(int ano) {
         return acervoRepository.findByPublicacao(ano);
     }
 
-    public Iterable<Acervo> findByCategoria(int id) throws ServiceException {
-        Categoria categoria = categoriaService.findById(id);
+    public Iterable<Acervo> findByCategoria(int idCategoria) {
+        Categoria categoria = categoriaService.findById(idCategoria);
         return acervoRepository.findByCategoria(categoria);
     }
 
-    public Iterable<Acervo> findAllByAutor(String autor) {
+    public Iterable<Acervo> findByAutor(String autor) {
         return acervoRepository.findByAutorContainingIgnoreCase(autor);
     }
 
-    public Iterable<Acervo> findByTitulo(String autor) {
-        return acervoRepository.findByTituloContainingIgnoreCase(autor);
+    public Iterable<Acervo> findByTitulo(String titulo) {
+        return acervoRepository.findByTituloContainingIgnoreCase(titulo);
     }
 
     public Acervo findById(Long id) {
@@ -58,7 +70,13 @@ public class AcervoService {
                 .orElse(null);
     }
 
-    public Acervo setStatusById(Long id, boolean status) throws ServiceException {
+
+    public Acervo setStatus(Acervo acervo, boolean status) {
+        acervo.setActive(status);
+        return acervoRepository.save(acervo);
+    }
+
+    public Acervo setStatusById(Long id, boolean status) {
         Acervo acervo = findById(id);
         if (acervo == null) {
             throw new ServiceException("Título Id não encontrado!");

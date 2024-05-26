@@ -1,10 +1,8 @@
 package com.pucpr.biblioteca.service;
 
 import com.pucpr.biblioteca.auth.AuthenticationFacade;
-import com.pucpr.biblioteca.entity.Acervo;
 import com.pucpr.biblioteca.dto.MyUserDetails;
 import com.pucpr.biblioteca.entity.User;
-import com.pucpr.biblioteca.repository.AcervoRepository;
 import com.pucpr.biblioteca.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetailsService;

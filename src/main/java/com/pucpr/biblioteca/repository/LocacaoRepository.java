@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface LocacaoRepository extends JpaRepository<Locacao, Long> {
     public Iterable<Locacao> findByOrderByIdAsc();
-    public Iterable<Locacao> findByAcervoOrderByIdAsc(Acervo acervo);
-    public Iterable<Locacao> findByUserOrderByIdAsc(User user);
+    public Locacao findByAcervo(Acervo acervo);
+    public Locacao findByUser(User user);
 
 }
