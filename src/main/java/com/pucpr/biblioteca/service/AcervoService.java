@@ -66,7 +66,6 @@ public class AcervoService {
                 .orElse(null);
     }
 
-
     public Acervo setStatus(Acervo acervo, boolean status) {
         acervo.setActive(status);
         return acervoRepository.save(acervo);

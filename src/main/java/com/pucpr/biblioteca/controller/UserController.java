@@ -1,6 +1,5 @@
 package com.pucpr.biblioteca.controller;
 
-import com.pucpr.biblioteca.dto.LocacaoDTO;
 import com.pucpr.biblioteca.dto.LoginUserDTO;
 import com.pucpr.biblioteca.dto.UserDTO;
 import com.pucpr.biblioteca.entity.Locacao;
@@ -61,7 +60,7 @@ public class UserController {
     @GetMapping("/locacoes")
     public ResponseEntity< Iterable<Locacao>> findLocacoesByUser() {
         User user = userService.getUserLogado();
-        Iterable<Locacao> locacao = locacaoService.findByUser(user);
+        Iterable<Locacao> locacao = locacaoService.findByUserAndActive(user);
         return ResponseEntity.ok(locacao);
     }
 

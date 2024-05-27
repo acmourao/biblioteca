@@ -30,13 +30,17 @@ public class LocacaoService {
         return locacaoRepository.findByAcervo(acervo);
     }
 
-    public Iterable<Locacao> findByUser(User user) {
-        return locacaoRepository.findByUser(user);
+    public Iterable<Locacao> findByUserAndActive(User user) {
+        return locacaoRepository.findByUserAndActiveTrue(user);
+    }
+
+    public long countByUser(User user) {
+        return locacaoRepository.countByUser(user);
     }
 
     public Iterable<Locacao> findByUserId(Long id) {
         User user = userService.findById(id);
-        return findByUser(user);
+        return findByUserAndActive(user);
     }
 
     public Locacao emprestarAcervo(LocacaoDTO locacaoDTO) {
@@ -44,9 +48,13 @@ public class LocacaoService {
         if (acervo == null) {
             throw new RuntimeException("Acervo não disponível!");
         }
-        Locacao locacao = new Locacao();
+
         User user = userService.findById( locacaoDTO.usuario() );
-        //falta testar o maximo de emprestimos por usuario
+        if (countByUser(user) > 2) {
+            throw new RuntimeException("Limite de locações por usuário atingido!");
+        }
+
+        Locacao locacao = new Locacao();
         locacao.setAcervo( acervoService.setStatus(acervo,false ) );
         locacao.setUser(user);
         locacao.setEmprestimo(currentDate());
