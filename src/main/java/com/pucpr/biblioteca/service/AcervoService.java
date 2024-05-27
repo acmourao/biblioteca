@@ -31,16 +31,12 @@ public class AcervoService {
         return acervoRepository.findByOrderByIdAsc(Limit.of(limit));
     }
 
-    public Acervo isDisponiveis(Long id) {
+    public Acervo isDisponivel(Long id) {
         return acervoRepository.getAcervoByIdActive(id);
     }
 
     public Iterable<Acervo> findAllDisponiveis(int limit) {
         return acervoRepository.findByActiveTrueOrderByIdAsc(Limit.of(limit));
-    }
-
-    public Iterable<Acervo> findByOrderByTituloAsc(int limit) {
-        return acervoRepository.findByActiveTrueOrderByTituloAsc(Limit.of(limit));
     }
 
     public Iterable<Acervo> findIndisponiveis() {

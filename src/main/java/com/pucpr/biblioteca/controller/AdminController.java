@@ -1,14 +1,11 @@
 package com.pucpr.biblioteca.controller;
 
-import com.pucpr.biblioteca.dto.AcervoDTO;
 import com.pucpr.biblioteca.dto.LocacaoDTO;
 import com.pucpr.biblioteca.dto.MyUserDetails;
 import com.pucpr.biblioteca.entity.Acervo;
-import com.pucpr.biblioteca.entity.Categoria;
 import com.pucpr.biblioteca.entity.Locacao;
 import com.pucpr.biblioteca.entity.User;
 import com.pucpr.biblioteca.service.AcervoService;
-import com.pucpr.biblioteca.service.CategoriaService;
 import com.pucpr.biblioteca.service.LocacaoService;
 import com.pucpr.biblioteca.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,14 +25,12 @@ public class AdminController {
     @Autowired
     private AcervoService acervoService;
 
-    @Autowired
-    private CategoriaService categoriaService;
-
     @GetMapping("/user/all")
     public ResponseEntity< Iterable<User> > consultaTodosUsuarios(){
         Iterable<User> users = userService.findAllUsers();
         return ResponseEntity.ok(users);
     }
+
     @GetMapping("/user/detail/{idUser}")
     public ResponseEntity<MyUserDetails> consultaDetailPorId(@PathVariable Long idUser){
         return ResponseEntity.ok( userService.findUserDetailById(idUser) );
@@ -46,17 +41,7 @@ public class AdminController {
          return ResponseEntity.ok( userService.findById(idUser) );
     }
 
-    @PostMapping("/categoria/add")
-    public ResponseEntity<Categoria> addCategoria(@RequestBody Categoria categoria) {
-        return ResponseEntity.ok( categoriaService.addCategoria(categoria) );
-    }
-
-    @PostMapping("/acervo/add")
-    public ResponseEntity<Acervo> addAcervo(@RequestBody AcervoDTO acervoDTO) {
-        return ResponseEntity.ok( acervoService.addAcervo(acervoDTO) );
-    }
-
-    @PostMapping("/acervo/liberarBloquear/{idAcervo}")
+    @PostMapping("/acervo/lockUnlock/{idAcervo}")
     public ResponseEntity<Acervo> liberaBloqueiaById(@PathVariable Long idAcervo, @RequestBody boolean status) {
         return ResponseEntity.ok( acervoService.setStatusById(idAcervo, status) );
         //bloqueio administrativo, usado na locação e outros impedimentos.
@@ -72,17 +57,12 @@ public class AdminController {
         return locacaoService.devolverAcervo(idLocacao);
     }
 
-    @GetMapping("/acervo/indisponiveis")
-    public ResponseEntity< Iterable<Acervo> > findAllOut(){
-        Iterable<Acervo> acervos = acervoService.findIndisponiveis();
-        return ResponseEntity.ok(acervos);
-    }
-
-    @GetMapping("/locacao/all")
+    @GetMapping("/locacao/pendentes")
     public ResponseEntity<Iterable<Locacao>> findPendentesAllUsers() {
         Iterable<Locacao> locacoes = locacaoService.findPendentesAllUsers();
         return ResponseEntity.ok(locacoes);
     }
+
     @GetMapping("/locacao/{idLocacao}")
     public ResponseEntity<Locacao> findById(@PathVariable Long idLocacao) {
         return ResponseEntity.ok(locacaoService.findById(idLocacao));
@@ -95,8 +75,8 @@ public class AdminController {
     }
 
     @GetMapping("/locacao/user/{idUser}")
-    public ResponseEntity<Locacao> findAllByUser(@PathVariable Long idUser) {
-        Locacao locacao = locacaoService.findByUser(idUser);
+    public ResponseEntity< Iterable<Locacao>> findLocacoesByUser(@PathVariable Long idUser) {
+        Iterable<Locacao> locacao = locacaoService.findByUserId(idUser);
         return ResponseEntity.ok(locacao);
     }
 }

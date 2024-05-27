@@ -23,7 +23,6 @@ public class AuthenticationFacade {
     public User getUser() {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         logger.info("Usuário Logado .: " + username);
-        //System.out.print("\nUsuário Logado .: " + username + "\n");
         return userRepository.findByUsername(username);
     }
 }

@@ -1,5 +1,6 @@
 package com.pucpr.biblioteca.controller;
 
+import com.pucpr.biblioteca.dto.AcervoDTO;
 import com.pucpr.biblioteca.entity.Acervo;
 import com.pucpr.biblioteca.entity.Categoria;
 import com.pucpr.biblioteca.service.AcervoService;
@@ -20,9 +21,20 @@ public class AcervoController {
         return ResponseEntity.ok(acervo);
     }
 
+    @PostMapping("/add")
+    public ResponseEntity<Acervo> addAcervo(@RequestBody AcervoDTO acervoDTO) {
+        return ResponseEntity.ok( acervoService.addAcervo(acervoDTO) );
+    }
+
     @GetMapping("/disponiveis")
     public ResponseEntity< Iterable<Acervo> > findDisponiveis(){
         Iterable<Acervo> acervos = acervoService.findAllDisponiveis(10);
+        return ResponseEntity.ok(acervos);
+    }
+
+    @GetMapping("/indisponiveis")
+    public ResponseEntity< Iterable<Acervo> > findAllOut(){
+        Iterable<Acervo> acervos = acervoService.findIndisponiveis();
         return ResponseEntity.ok(acervos);
     }
 

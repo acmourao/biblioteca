@@ -10,7 +10,6 @@ import org.springframework.data.repository.query.Param;
 public interface AcervoRepository extends JpaRepository<Acervo, Long> {
     public Iterable<Acervo> findByOrderByIdAsc(Limit of);
     public Iterable<Acervo> findByActiveTrueOrderByIdAsc(Limit of);
-    public Iterable<Acervo> findByActiveTrueOrderByTituloAsc(Limit of);
     public Iterable<Acervo> findByActiveFalseOrderByIdAsc(Limit of);
     public Iterable<Acervo> findByAutorContainingIgnoreCase(String autor);
     public Iterable<Acervo> findByTituloContainingIgnoreCase(String titulo);

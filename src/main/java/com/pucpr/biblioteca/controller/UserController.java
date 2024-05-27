@@ -1,6 +1,8 @@
 package com.pucpr.biblioteca.controller;
 
+import com.pucpr.biblioteca.dto.LocacaoDTO;
 import com.pucpr.biblioteca.dto.LoginUserDTO;
+import com.pucpr.biblioteca.dto.UserDTO;
 import com.pucpr.biblioteca.entity.Locacao;
 import com.pucpr.biblioteca.entity.User;
 import com.pucpr.biblioteca.service.JwtTokenService;
@@ -26,7 +28,7 @@ public class UserController {
     @Autowired
     private LocacaoService locacaoService;
 
-    @PostMapping
+    @PostMapping("/add")
     public User createUser(@RequestBody User user) {
         return jwtUserService.createUser(user);
     }
@@ -41,9 +43,31 @@ public class UserController {
         return ResponseEntity.ok(userService.getUserLogado());
     }
 
+    @PostMapping("/edit")
+    public ResponseEntity<User> editar(@RequestBody UserDTO userDTO) {
+        return ResponseEntity.ok(userService.editar(userDTO));
+    }
+
+    @PostMapping("/delete")
+    public void deletar() {
+        userService.deletar();
+    }
+
     @PostMapping("/emprestar/{idAcervo}")
     public Locacao emprestarAcervoUserLogado(@PathVariable Long idAcervo) {
         return locacaoService.emprestarAcervoUserLogado(idAcervo);
+    }
+
+    @GetMapping("/locacoes")
+    public ResponseEntity< Iterable<Locacao>> findLocacoesByUser() {
+        User user = userService.getUserLogado();
+        Iterable<Locacao> locacao = locacaoService.findByUser(user);
+        return ResponseEntity.ok(locacao);
+    }
+
+    @PostMapping("/devolver/{idLocacao}")
+    public Locacao devolverAcervo(@PathVariable Long idLocacao) {
+        return locacaoService.devolverAcervo(idLocacao);
     }
 
 }

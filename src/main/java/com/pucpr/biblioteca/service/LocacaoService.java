@@ -7,7 +7,6 @@ import com.pucpr.biblioteca.entity.Locacao;
 import com.pucpr.biblioteca.entity.User;
 import com.pucpr.biblioteca.repository.LocacaoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -23,7 +22,7 @@ public class LocacaoService {
     private UserService userService;
 
     public Iterable<Locacao> findPendentesAllUsers() {
-        return locacaoRepository.findByOrderByIdAsc();
+        return locacaoRepository.findByActiveTrueOrderByIdAsc();
     }
 
     public Locacao findByAcervo(Long id) {
@@ -31,18 +30,23 @@ public class LocacaoService {
         return locacaoRepository.findByAcervo(acervo);
     }
 
-    public Locacao findByUser(Long id) {
-        User user = userService.findById(id);
+    public Iterable<Locacao> findByUser(User user) {
         return locacaoRepository.findByUser(user);
     }
 
+    public Iterable<Locacao> findByUserId(Long id) {
+        User user = userService.findById(id);
+        return findByUser(user);
+    }
+
     public Locacao emprestarAcervo(LocacaoDTO locacaoDTO) {
-        Acervo acervo = acervoService.isDisponiveis(locacaoDTO.acervo());
+        Acervo acervo = acervoService.isDisponivel(locacaoDTO.acervo());
         if (acervo == null) {
-            throw new UsernameNotFoundException("Acervo não disponível!");
+            throw new RuntimeException("Acervo não disponível!");
         }
         Locacao locacao = new Locacao();
         User user = userService.findById( locacaoDTO.usuario() );
+        //falta testar o maximo de emprestimos por usuario
         locacao.setAcervo( acervoService.setStatus(acervo,false ) );
         locacao.setUser(user);
         locacao.setEmprestimo(currentDate());

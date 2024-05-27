@@ -20,6 +20,10 @@ public class CategoriaController {
         return ResponseEntity.ok(categoria);
     }
 
+    @PostMapping("/add")
+    public ResponseEntity<Categoria> addCategoria(@RequestBody Categoria categoria) {
+        return ResponseEntity.ok( categoriaService.addCategoria(categoria) );
+    }
     @GetMapping("/{id}")
     public ResponseEntity<Categoria> findById(@PathVariable int id) {
         return ResponseEntity.ok( categoriaService.findById(id) );
