@@ -29,11 +29,10 @@ public class JwtUserService {
         UsernamePasswordAuthenticationToken token =
                 new UsernamePasswordAuthenticationToken(loginUserDTO.username(), loginUserDTO.password());
         Authentication authentication = authenticationManager.authenticate(token);
-//        MyUserDetails userDetails = (MyUserDetails) authentication.getPrincipal();
         return tokenService.generateToken(authentication.getName());
     }
 
-    public User createUser(User user) {
+    public User manterPasswordUser(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
     }

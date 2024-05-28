@@ -1,11 +1,12 @@
 package com.pucpr.biblioteca.service;
 
 import java.time.LocalDate;
-import com.pucpr.biblioteca.dto.LocacaoDTO;
+
 import com.pucpr.biblioteca.entity.Acervo;
 import com.pucpr.biblioteca.entity.Locacao;
 import com.pucpr.biblioteca.entity.User;
 import com.pucpr.biblioteca.repository.LocacaoRepository;
+import org.hibernate.service.spi.ServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,11 +26,6 @@ public class LocacaoService {
         return locacaoRepository.findByActiveTrueOrderByIdAsc();
     }
 
-    public Locacao findByAcervo(Long id) {
-        Acervo acervo = acervoService.findById(id);
-        return locacaoRepository.findByAcervo(acervo);
-    }
-
     public Iterable<Locacao> findByUserAndActive(User user) {
         return locacaoRepository.findByUserAndActiveTrue(user);
     }
@@ -39,17 +35,16 @@ public class LocacaoService {
     }
 
     public Iterable<Locacao> findByUserId(Long id) {
-        User user = userService.findById(id);
-        return findByUserAndActive(user);
+        return findByUserAndActive(userService.findById(id));
     }
 
-    public Locacao emprestarAcervo(LocacaoDTO locacaoDTO) {
-        Acervo acervo = acervoService.isDisponivel(locacaoDTO.acervo());
+    public Locacao emprestarAcervo(Long idAcervo) {
+        Acervo acervo = acervoService.isDisponivel(idAcervo);
         if (acervo == null) {
             throw new RuntimeException("Acervo não disponível!");
         }
 
-        User user = userService.findById( locacaoDTO.usuario() );
+        User user = userService.getUserLogado();
         if (countByUser(user) > 2) {
             throw new RuntimeException("Limite de locações por usuário atingido!");
         }
@@ -62,26 +57,34 @@ public class LocacaoService {
         return locacaoRepository.save(locacao);
     }
 
-    public Locacao emprestarAcervoUserLogado(Long idAcervo) {
-        LocacaoDTO locacaoDTO = new LocacaoDTO(idAcervo, userService.getUserLogado().getId());
-        return emprestarAcervo(locacaoDTO);
-    }
-
-    public Locacao devolverAcervo(Long id) {
-        Locacao locacao = findById(id);
-        Acervo acervo = acervoService.setStatusById( locacao.getAcervo().getId(), true);
-        locacao.setAcervo(acervo);
+    public Locacao devolverAcervo(Long idAcervo) {
+        Locacao locacao = findByAcervoId(idAcervo);
+        locacao.setAcervo( acervoService.setStatusById( idAcervo, true) );
         //Falta verificar se está vencido na data devoluçao
         locacao.setDevolucao(currentDate());
         locacao.setActive(false);
         return locacaoRepository.save(locacao);
     }
 
+    public Locacao findByAcervoId(Long id) {
+        Acervo acervo = acervoService.findById(id);
+        return findLocacaoByAcervo(acervo);
+    }
+
+    public Locacao findLocacaoByAcervo(Acervo acervo) {
+        Locacao locacao = locacaoRepository.findByActiveTrueAndAcervo(acervo);
+        if (locacao == null) {
+            throw new RuntimeException("Acervo não está locado!");
+        }
+        return locacao;
+    }
+
     public Locacao findById(Long id) {
         return locacaoRepository
                 .findById(id)
-                .orElse(null);
+                .orElseThrow(() -> new ServiceException("Locação não encontrada!"));
     }
+
     private LocalDate currentDate() {
         return LocalDate.now();
     }

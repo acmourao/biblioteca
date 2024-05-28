@@ -24,8 +24,8 @@ public class Locacao {
     @ManyToOne
     private User user;
 
-    private LocalDate emprestimo;
     private LocalDate devolucao;
+    private LocalDate emprestimo;
 
     private Boolean active;
 

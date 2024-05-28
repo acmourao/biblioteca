@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface LocacaoRepository extends JpaRepository<Locacao, Long> {
     public Iterable<Locacao> findByActiveTrueOrderByIdAsc();
-    public Locacao findByAcervo(Acervo acervo);
+    public Locacao findByActiveTrueAndAcervo(Acervo acervo);
     public Iterable<Locacao> findByUserAndActiveTrue(User user);
     public long countByUser(User user);
 }

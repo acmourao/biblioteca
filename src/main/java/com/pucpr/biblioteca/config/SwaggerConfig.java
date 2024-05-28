@@ -3,6 +3,7 @@ package com.pucpr.biblioteca.config;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.ExternalDocumentation;
 import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.info.Contact;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.info.License;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
@@ -17,13 +18,12 @@ public class SwaggerConfig {
     public OpenAPI customOpenAPI() {
         final String securitySchemeName = "bearerAuth";
         return new OpenAPI()
-                .info(new Info().title("Authentication Service")
-                        .description("This is auth service use for validate the user.")
-                        .version("Projeto Final PUCPR - Anderson Mourão - Biblioteca v0.0.1")
-                        .license(new License().name("Apache 2.0").url("http://springdoc.org")))
+                .info(new Info().title("Projeto Final PUCPR - Curso de Backend Java SpringBoot")
+                        .version("V.1.0")
+                        .license(new License().name("Base de Dados em memória H2").url("http://localhost:8080/h2-console")))
                 .externalDocs(new ExternalDocumentation()
-                        .description("SpringBoot Wiki Documentation")
-                        .url("https://springboot.wiki.github.org/docs"))
+                        .description("API para Controle de Biblioteca")
+                        .url("https://github.com/acmourao/biblioteca.git"))
                 .addSecurityItem(new SecurityRequirement().addList(securitySchemeName))
                 .components(
                         new Components()

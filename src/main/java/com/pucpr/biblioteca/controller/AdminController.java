@@ -1,6 +1,6 @@
 package com.pucpr.biblioteca.controller;
 
-import com.pucpr.biblioteca.dto.LocacaoDTO;
+import com.pucpr.biblioteca.dto.AcervoDTO;
 import com.pucpr.biblioteca.dto.MyUserDetails;
 import com.pucpr.biblioteca.entity.Acervo;
 import com.pucpr.biblioteca.entity.Locacao;
@@ -41,26 +41,30 @@ public class AdminController {
          return ResponseEntity.ok( userService.findById(idUser) );
     }
 
+    @PostMapping("/acervo/add")
+    public ResponseEntity<Acervo> addAcervo(@RequestBody AcervoDTO acervoDTO) {
+        return ResponseEntity.ok( acervoService.addAcervo(acervoDTO) );
+    }
+
+    @PostMapping("/acervo/edit")
+    public ResponseEntity<Acervo> editar(@RequestBody Acervo acervo) {
+        return ResponseEntity.ok(acervoService.editar(acervo));
+    }
+
+    @PostMapping("/acervo/delete/{id}")
+    public @ResponseBody String deletar(@PathVariable Long id) {
+        return acervoService.deletar(id);
+    }
+
     @PostMapping("/acervo/lockUnlock/{idAcervo}")
     public ResponseEntity<Acervo> liberaBloqueiaById(@PathVariable Long idAcervo, @RequestBody boolean status) {
         return ResponseEntity.ok( acervoService.setStatusById(idAcervo, status) );
         //bloqueio administrativo, usado na locação e outros impedimentos.
     }
 
-    @PostMapping("/acervo/emprestar")
-    public Locacao emprestarAcervo(@RequestBody LocacaoDTO locacaoDTO) {
-        return locacaoService.emprestarAcervo(locacaoDTO);
-    }
-
-    @PostMapping("/acervo/devolver/{idLocacao}")
-    public Locacao devolverAcervo(@PathVariable Long idLocacao) {
-        return locacaoService.devolverAcervo(idLocacao);
-    }
-
     @GetMapping("/locacao/pendentes")
     public ResponseEntity<Iterable<Locacao>> findPendentesAllUsers() {
-        Iterable<Locacao> locacoes = locacaoService.findPendentesAllUsers();
-        return ResponseEntity.ok(locacoes);
+        return ResponseEntity.ok(locacaoService.findPendentesAllUsers());
     }
 
     @GetMapping("/locacao/{idLocacao}")
@@ -70,13 +74,11 @@ public class AdminController {
 
     @GetMapping("/locacao/acervo/{idAcervo}")
     public ResponseEntity<Locacao> findAllbyAcervo(@PathVariable Long idAcervo) {
-        Locacao locacoes = locacaoService.findByAcervo(idAcervo);
-        return ResponseEntity.ok(locacoes);
+        return ResponseEntity.ok(locacaoService.findByAcervoId(idAcervo));
     }
 
     @GetMapping("/locacao/user/{idUser}")
     public ResponseEntity< Iterable<Locacao>> findLocacoesByUser(@PathVariable Long idUser) {
-        Iterable<Locacao> locacao = locacaoService.findByUserId(idUser);
-        return ResponseEntity.ok(locacao);
+        return ResponseEntity.ok(locacaoService.findByUserId(idUser));
     }
 }

@@ -29,17 +29,7 @@ public class UserController {
 
     @PostMapping("/add")
     public User createUser(@RequestBody User user) {
-        return jwtUserService.createUser(user);
-    }
-
-    @PostMapping("/login")
-    public String authenticateUser(@RequestBody LoginUserDTO loginUserDto) {
-        return jwtUserService.authenticateUser(loginUserDto);
-    }
-
-    @GetMapping("/meusdados")
-    public ResponseEntity<User> consultaMeusDados() {
-        return ResponseEntity.ok(userService.getUserLogado());
+        return jwtUserService.manterPasswordUser(user);
     }
 
     @PostMapping("/edit")
@@ -48,25 +38,41 @@ public class UserController {
     }
 
     @PostMapping("/delete")
-    public void deletar() {
-        userService.deletar();
+    public @ResponseBody String deletar() {
+        return userService.deletar();
+    }
+
+    @PostMapping("/login")
+    public String authenticateUser(@RequestBody LoginUserDTO loginUserDto) {
+        return jwtUserService.authenticateUser(loginUserDto);
+    }
+
+    @PostMapping("/trocarsenha")
+    public User trocarSenha(@RequestBody String password) {
+        User user = userService.getUserLogado();
+        user.setPassword(password);
+        return jwtUserService.manterPasswordUser(user);
+    }
+
+    @GetMapping("/meusdados")
+    public ResponseEntity<User> consultaMeusDados() {
+        return ResponseEntity.ok(userService.getUserLogado());
     }
 
     @PostMapping("/emprestar/{idAcervo}")
-    public Locacao emprestarAcervoUserLogado(@PathVariable Long idAcervo) {
-        return locacaoService.emprestarAcervoUserLogado(idAcervo);
+    public ResponseEntity<Locacao> emprestarAcervoUserLogado(@PathVariable Long idAcervo) {
+        return ResponseEntity.ok(locacaoService.emprestarAcervo(idAcervo));
+    }
+
+    @PostMapping("/devolver/{idAcervo}")
+    public ResponseEntity<Locacao> devolverAcervo(@PathVariable Long idAcervo) {
+        return ResponseEntity.ok(locacaoService.devolverAcervo(idAcervo));
     }
 
     @GetMapping("/locacoes")
     public ResponseEntity< Iterable<Locacao>> findLocacoesByUser() {
         User user = userService.getUserLogado();
-        Iterable<Locacao> locacao = locacaoService.findByUserAndActive(user);
-        return ResponseEntity.ok(locacao);
-    }
-
-    @PostMapping("/devolver/{idLocacao}")
-    public Locacao devolverAcervo(@PathVariable Long idLocacao) {
-        return locacaoService.devolverAcervo(idLocacao);
+        return ResponseEntity.ok(locacaoService.findByUserAndActive(user));
     }
 
 }

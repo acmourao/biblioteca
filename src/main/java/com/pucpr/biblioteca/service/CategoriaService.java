@@ -2,6 +2,7 @@ package com.pucpr.biblioteca.service;
 
 import com.pucpr.biblioteca.entity.Categoria;
 import com.pucpr.biblioteca.repository.CategoriaRepository;
+import org.hibernate.service.spi.ServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,7 +25,7 @@ public class CategoriaService {
     public Categoria findById(int id) {
         return categoriaRepository
                 .findById(id)
-                .orElse(null);
+                .orElseThrow(() -> new ServiceException("Categoria não encontrada!"));
     }
 
 }

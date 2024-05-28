@@ -10,11 +10,10 @@ import org.springframework.data.repository.query.Param;
 public interface AcervoRepository extends JpaRepository<Acervo, Long> {
     public Iterable<Acervo> findByOrderByIdAsc(Limit of);
     public Iterable<Acervo> findByActiveTrueOrderByIdAsc(Limit of);
-    public Iterable<Acervo> findByActiveFalseOrderByIdAsc(Limit of);
     public Iterable<Acervo> findByAutorContainingIgnoreCase(String autor);
     public Iterable<Acervo> findByTituloContainingIgnoreCase(String titulo);
     public Iterable<Acervo> findByPublicacao(int ano);
-    public Iterable<Acervo> findByCategoria(Categoria categoria);
+    public Iterable<Acervo> findByCategoriaAndActiveTrueOrderByTituloAsc(Categoria categoria);
 
     @Query("SELECT a FROM Acervo a WHERE a.id = :id and active")
     public Acervo getAcervoByIdActive(@Param("id") Long id );

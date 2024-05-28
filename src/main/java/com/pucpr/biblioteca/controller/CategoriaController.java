@@ -16,8 +16,7 @@ public class CategoriaController {
 
     @GetMapping
     public ResponseEntity< Iterable<Categoria> > consultaTodasCategorias(){
-        Iterable<Categoria> categoria = categoriaService.findAll();
-        return ResponseEntity.ok(categoria);
+        return ResponseEntity.ok(categoriaService.findAll());
     }
 
     @PostMapping("/add")

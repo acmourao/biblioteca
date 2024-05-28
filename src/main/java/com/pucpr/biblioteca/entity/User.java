@@ -48,7 +48,8 @@ public class User {
     }
 
     public void setEmail(String email) {
-        this.email = email;
+        if (email != null)
+            this.email = email;
     }
 
     public String getTelefone() {
@@ -56,7 +57,8 @@ public class User {
     }
 
     public void setTelefone(String telefone) {
-        this.telefone = telefone;
+        if (telefone != null)
+            this.telefone = telefone;
     }
 
     // Standard getters and setters
@@ -66,7 +68,8 @@ public class User {
     }
 
     public void setUsername(String username) {
-        this.username = username;
+        if (username != null)
+            this.username = username;
     }
 
     public String getPassword() {
@@ -74,7 +77,8 @@ public class User {
     }
 
     public void setPassword(String password) {
-        this.password = password;
+        if (password != null)
+            this.password = password;
     }
 
     public String getRole() {
@@ -82,6 +86,7 @@ public class User {
     }
 
     public void setRole(String role) {
-        this.role = role;
+        if (role != null)
+            this.role = role;
     }
 }
