@@ -1,5 +1,6 @@
 package com.pucpr.biblioteca.service;
 
+import com.pucpr.biblioteca.dto.LoginUserDTO;
 import com.pucpr.biblioteca.entity.User;
 import com.pucpr.biblioteca.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,7 +9,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import com.pucpr.biblioteca.dto.LoginUserDTO;
 
 @Service
 public class JwtUserService {

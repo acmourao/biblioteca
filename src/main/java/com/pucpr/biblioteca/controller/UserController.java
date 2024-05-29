@@ -1,5 +1,6 @@
 package com.pucpr.biblioteca.controller;
 
+import com.pucpr.biblioteca.auth.AuthenticationFacade;
 import com.pucpr.biblioteca.dto.LoginUserDTO;
 import com.pucpr.biblioteca.dto.UserDTO;
 import com.pucpr.biblioteca.entity.Locacao;
@@ -9,12 +10,17 @@ import com.pucpr.biblioteca.service.JwtUserService;
 import com.pucpr.biblioteca.service.LocacaoService;
 import com.pucpr.biblioteca.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/user")
 public class UserController {
+
+    @Autowired
+    private AuthenticationFacade authenticationFacade;
+
     @Autowired
     private JwtUserService jwtUserService;
 
@@ -28,8 +34,8 @@ public class UserController {
     private LocacaoService locacaoService;
 
     @PostMapping("/add")
-    public User createUser(@RequestBody User user) {
-        return jwtUserService.manterPasswordUser(user);
+    public ResponseEntity<User> createUser(@RequestBody User user) {
+        return new ResponseEntity<>(jwtUserService.manterPasswordUser(user), HttpStatus.CREATED);
     }
 
     @PostMapping("/edit")
@@ -43,30 +49,30 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public String authenticateUser(@RequestBody LoginUserDTO loginUserDto) {
-        return jwtUserService.authenticateUser(loginUserDto);
+    public String authenticateUser(@RequestBody LoginUserDTO loginUserDTO) {
+        return jwtUserService.authenticateUser(loginUserDTO);
     }
 
     @PostMapping("/trocarsenha")
     public User trocarSenha(@RequestBody String password) {
-        User user = userService.getUserLogado();
+        User user = authenticationFacade.getUser();
         user.setPassword(password);
         return jwtUserService.manterPasswordUser(user);
     }
 
     @GetMapping("/meusdados")
     public ResponseEntity<User> consultaMeusDados() {
-        return ResponseEntity.ok(userService.getUserLogado());
+        return ResponseEntity.ok(authenticationFacade.getUser());
     }
 
-    @PostMapping("/emprestar/{idAcervo}")
+    @PostMapping("/locar/{idAcervo}")
     public ResponseEntity<Locacao> emprestarAcervoUserLogado(@PathVariable Long idAcervo) {
-        return ResponseEntity.ok(locacaoService.emprestarAcervo(idAcervo));
+        return ResponseEntity.ok(locacaoService.locarAcervo(idAcervo));
     }
 
     @PostMapping("/devolver/{idAcervo}")
     public ResponseEntity<Locacao> devolverAcervo(@PathVariable Long idAcervo) {
-        return ResponseEntity.ok(locacaoService.devolverAcervo(idAcervo));
+        return ResponseEntity.ok(userService.devolverAcervoUserLogado(idAcervo));
     }
 
     @GetMapping("/locacoes")

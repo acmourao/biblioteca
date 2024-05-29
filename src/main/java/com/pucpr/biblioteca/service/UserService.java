@@ -1,7 +1,9 @@
 package com.pucpr.biblioteca.service;
 
+import com.pucpr.biblioteca.auth.AuthenticationFacade;
 import com.pucpr.biblioteca.dto.MyUserDetails;
 import com.pucpr.biblioteca.dto.UserDTO;
+import com.pucpr.biblioteca.entity.Locacao;
 import com.pucpr.biblioteca.entity.User;
 import com.pucpr.biblioteca.repository.UserRepository;
 import org.hibernate.service.spi.ServiceException;
@@ -19,7 +21,13 @@ public class UserService implements UserDetailsService {
     Logger logger = LoggerFactory.getLogger(UserService.class);
 
     @Autowired
+    private AuthenticationFacade authenticationFacade;
+
+    @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private LocacaoService locacaoService;
 
     @Override
     public MyUserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -62,6 +70,14 @@ public class UserService implements UserDetailsService {
         logger.info("Id {} .: {} foi editado!", user.getId().toString(), user.getUsername());
         return user;
     }
+
+    public Locacao devolverAcervoUserLogado(Long idAcervo) {
+        Locacao locacao = locacaoService.findByAcervoId(idAcervo);
+        if (!locacao.getUser().getUsername().equals(authenticationFacade.getUser().getUsername()))
+            throw new RuntimeException("Usuário logado não locou este acervo!");
+        return locacaoService.baixarLocacao(locacao);
+    }
+
 
     public String deletar() {
         User user = getUserLogado();

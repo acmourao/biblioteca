@@ -1,6 +1,7 @@
 package com.pucpr.biblioteca.controller;
 
 import com.pucpr.biblioteca.dto.AcervoDTO;
+import com.pucpr.biblioteca.dto.LocacaoDTO;
 import com.pucpr.biblioteca.dto.MyUserDetails;
 import com.pucpr.biblioteca.entity.Acervo;
 import com.pucpr.biblioteca.entity.Locacao;
@@ -56,10 +57,14 @@ public class AdminController {
         return acervoService.deletar(id);
     }
 
-    @PostMapping("/acervo/lockUnlock/{idAcervo}")
-    public ResponseEntity<Acervo> liberaBloqueiaById(@PathVariable Long idAcervo, @RequestBody boolean status) {
-        return ResponseEntity.ok( acervoService.setStatusById(idAcervo, status) );
-        //bloqueio administrativo, usado na locação e outros impedimentos.
+    @PostMapping("/acervo/emprestar")
+    public ResponseEntity<Locacao> emprestarAcervo(@RequestBody LocacaoDTO locacaoDTO) {
+        return ResponseEntity.ok( locacaoService.emprestarAcervo(locacaoDTO) );
+    }
+
+    @PostMapping("/acervo/devolver/{idAcervo}")
+    public ResponseEntity<Locacao> devolverAcervo(@PathVariable Long idAcervo, @RequestBody boolean status) {
+        return ResponseEntity.ok( locacaoService.devolverAcervo(idAcervo) );
     }
 
     @GetMapping("/locacao/pendentes")

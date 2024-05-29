@@ -5,6 +5,7 @@ import com.pucpr.biblioteca.entity.Acervo;
 import com.pucpr.biblioteca.entity.Categoria;
 import com.pucpr.biblioteca.entity.Locacao;
 import com.pucpr.biblioteca.repository.AcervoRepository;
+import com.pucpr.biblioteca.repository.LocacaoRepository;
 import org.hibernate.service.spi.ServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Limit;
@@ -20,7 +21,7 @@ public class AcervoService {
     private CategoriaService categoriaService;
 
     @Autowired
-    private LocacaoService locacaoService;
+    private LocacaoRepository locacaoRepository;
 
     public Acervo addAcervo(AcervoDTO acervoDTO) {
         Acervo acervo = new Acervo(
@@ -46,7 +47,11 @@ public class AcervoService {
     }
 
     public Acervo isDisponivel(Long id) {
-        return acervoRepository.getAcervoByIdActive(id);
+        Acervo acervo = acervoRepository.getAcervoByIdActive(id);
+        if (acervo == null) {
+            throw new RuntimeException("Acervo não disponível!");
+        }
+        return acervo;
     }
 
     public Iterable<Acervo> findAllDisponiveis(int limit) {
@@ -70,17 +75,8 @@ public class AcervoService {
         return acervoRepository.findByTituloContainingIgnoreCase(titulo);
     }
 
-    public Acervo findById(Long id) {
-        return acervoRepository
-                .findById(id)
-                .orElseThrow(() -> new ServiceException("Título não encontrado!"));
-    }
-
     public Acervo setStatus(Acervo acervo, boolean status) {
         acervo.setActive(status);
-        if (status)
-            if (locacaoService.findLocacaoByAcervo(acervo) != null)
-                throw new RuntimeException("Título está locado, não pode ser liberado!");
         return acervoRepository.save(acervo);
     }
 
@@ -88,4 +84,9 @@ public class AcervoService {
         return setStatus(findById(id), status);
     }
 
+    public Acervo findById(Long id) {
+        return acervoRepository
+                .findById(id)
+                .orElseThrow(() -> new ServiceException("Título não encontrado!"));
+    }
 }
