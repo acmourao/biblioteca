@@ -54,6 +54,12 @@ public class UserService implements UserDetailsService {
         return new MyUserDetails(findById(id));
     }
 
+    public MyUserDetails bloquearUserById(Long id) {
+        User user = findById(id);
+        user.setActive(false);
+        return new MyUserDetails(userRepository.save(user));
+    }
+
     public User findById(Long id) {
         return userRepository
                 .findById(id)
@@ -62,13 +68,28 @@ public class UserService implements UserDetailsService {
 
     public User editar(UserDTO userDTO) {
         User user = getUserLogado();
+        return manterUser(userDTO, user);
+    }
+
+    public User editarById(Long id, UserDTO userDTO) {
+        User user = findById(id);
+        return manterUser(userDTO, user);
+    }
+
+    private User manterUser(UserDTO userDTO, User user) {
         user.setUsername(userDTO.username());
         user.setEmail(userDTO.email());
         user.setRole(userDTO.role());
         user.setTelefone(userDTO.telefone());
-        userRepository.save(user);
         logger.info("Id {} .: {} foi editado!", user.getId().toString(), user.getUsername());
-        return user;
+        return userRepository.save(user);
+    }
+
+    public String deletar() {
+        User user = getUserLogado();
+        userRepository.delete(user);
+        logger.info("{} foi apagado!", user.getUsername());
+        return "redirect:/";
     }
 
     public Locacao devolverAcervoUserLogado(Long idAcervo) {
@@ -78,19 +99,10 @@ public class UserService implements UserDetailsService {
         return locacaoService.baixarLocacao(locacao);
     }
 
-
-    public String deletar() {
-        User user = getUserLogado();
-        userRepository.delete(user);
-        logger.info("{} foi apagado!", user.getUsername());
-        return "redirect:/";
-    }
-
-
     public User getUserLogado() {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = findByUsername(username);
-        logger.info("Usuário Logado .: {}", user.getUsername());
+        logger.info("Usuário .: {}", user.getUsername());
         return user;
     }
 

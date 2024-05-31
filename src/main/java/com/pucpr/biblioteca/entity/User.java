@@ -8,10 +8,11 @@ import java.util.List;
 @Table(name = "usuarios")
 public class User {
 
-    public User(String username, String password, String role, String email, String telefone) {
+    public User(String username, String password, String role, boolean active, String email, String telefone) {
         this.username = username;
         this.password = password;
         this.role = role;
+        this.active = active;
         this.email = email;
         this.telefone = telefone;
     }
@@ -29,6 +30,8 @@ public class User {
     private String password;
 
     private String role;
+
+    private boolean active;
 
     @Column(unique = true)
     private String email;
@@ -88,5 +91,13 @@ public class User {
     public void setRole(String role) {
         if (role != null)
             this.role = role;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 }

@@ -41,7 +41,7 @@ public class JwtTokenService {
     }
 
     private Instant expirationDate() {
-        return ZonedDateTime.now(ZoneId.of("America/Sao_Paulo")).plusMonths(3).toInstant();
+        return ZonedDateTime.now(ZoneId.of("America/Sao_Paulo")).plusDays(1).toInstant();
     }
 
 }

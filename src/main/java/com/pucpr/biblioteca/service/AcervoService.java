@@ -3,7 +3,6 @@ package com.pucpr.biblioteca.service;
 import com.pucpr.biblioteca.dto.AcervoDTO;
 import com.pucpr.biblioteca.entity.Acervo;
 import com.pucpr.biblioteca.entity.Categoria;
-import com.pucpr.biblioteca.entity.Locacao;
 import com.pucpr.biblioteca.repository.AcervoRepository;
 import com.pucpr.biblioteca.repository.LocacaoRepository;
 import org.hibernate.service.spi.ServiceException;
@@ -23,7 +22,7 @@ public class AcervoService {
     @Autowired
     private LocacaoRepository locacaoRepository;
 
-    public Acervo addAcervo(AcervoDTO acervoDTO) {
+    public Acervo add(AcervoDTO acervoDTO) {
         Acervo acervo = new Acervo(
                 acervoDTO.titulo(),
                 acervoDTO.autor(),
@@ -32,7 +31,12 @@ public class AcervoService {
         return acervoRepository.save(acervo);
     }
 
-    public Acervo editar(Acervo acervo) {
+    public Acervo editar(Long id, AcervoDTO acervoDTO) {
+        Acervo acervo = findById(id);
+        acervo.setTitulo(acervoDTO.titulo());
+        acervo.setAutor(acervoDTO.autor());
+        acervo.setPublicacao(acervoDTO.publicacao());
+        acervo.setCategoria(categoriaService.findById(acervoDTO.categoria()));
         acervoRepository.save(acervo);
         return acervo;
     }

@@ -16,6 +16,17 @@ public class CategoriaService {
         return categoriaRepository.save(categoria);
     }
 
+    public Categoria editar(Categoria temp) {
+        Categoria categoria = findById(temp.getId());
+        categoria.setTipo(temp.getTipo());
+        return categoriaRepository.save(categoria);
+    }
+
+    public String deletar(int id) {
+        categoriaRepository.delete(findById(id));
+        return "redirect:/";
+    }
+
     public Iterable<Categoria> findAll() {
         //repository.findAll(Sort.by(Sort.Direction.DESC, "colName").ignoreCase());
         //List<Passenger> passengers = repository.findAll(Sort.by(Sort.Direction.ASC, "seatNumber"));

@@ -31,6 +31,7 @@ public class InitialConfig {
                     "administrador",
                     "$2a$10$xtfayZf0FXUuz2HdCAe/puvhcpEtierSF5wp4knBulreepSbRopP6",
                     "ROLE_ADMIN",
+                    true,
                     "administrador@live.com",
                     "8599999999"));
 

@@ -5,7 +5,6 @@ import jakarta.persistence.*;
 import java.time.LocalDate;
 
 @Entity
-//@Table(indexes = @Index(columnList = "acervo_id, user_id"))
 @Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"acervo_id", "user_id"})})
 
 public class Locacao {

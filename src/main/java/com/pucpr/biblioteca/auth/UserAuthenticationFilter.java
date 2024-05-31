@@ -35,6 +35,8 @@ public class UserAuthenticationFilter extends OncePerRequestFilter {
                 // Busca o usuário pelo assunto (username, email, nick ..)
                 try {
                     MyUserDetails userDetails = userService.loadUserByUsername(subject);
+                    if (! userDetails.isEnabled() )
+                        throw new ServletException("Usuário bloqueado!");
                     // Cria um objeto de autenticação do Spring Security
                     Authentication authentication = new UsernamePasswordAuthenticationToken(subject, null, userDetails.getAuthorities());
                     // Define o objeto de autenticação no contexto de segurança do Spring Security
