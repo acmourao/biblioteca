@@ -9,6 +9,7 @@ import com.pucpr.biblioteca.service.JwtTokenService;
 import com.pucpr.biblioteca.service.JwtUserService;
 import com.pucpr.biblioteca.service.LocacaoService;
 import com.pucpr.biblioteca.service.UserService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -40,7 +41,7 @@ public class UserController {
 
     @PostMapping("/edit")
     public ResponseEntity<User> editar(@RequestBody UserDTO userDTO) {
-        return ResponseEntity.ok(userService.editar(userDTO));
+        return ResponseEntity.ok(userService.manterUser(userDTO));
     }
 
     @PostMapping("/delete")
@@ -53,11 +54,9 @@ public class UserController {
         return jwtUserService.authenticateUser(loginUserDTO);
     }
 
-    @PostMapping("/trocarsenha")
-    public User trocarSenha(@RequestBody String password) {
-        User user = authenticationFacade.getUser();
-        user.setPassword(password);
-        return jwtUserService.manterPasswordUser(user);
+    @PostMapping(value = "/trocarsenha", consumes = "application/json")
+    public ResponseEntity<User> trocarSenha(@RequestBody String password) {
+        return ResponseEntity.ok(jwtUserService.manterPasswordUserLogado(password));
     }
 
     @GetMapping("/meusdados")

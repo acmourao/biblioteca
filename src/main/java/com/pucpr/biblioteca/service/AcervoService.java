@@ -22,21 +22,13 @@ public class AcervoService {
     @Autowired
     private LocacaoRepository locacaoRepository;
 
-    public Acervo add(AcervoDTO acervoDTO) {
-        Acervo acervo = new Acervo(
-                acervoDTO.titulo(),
-                acervoDTO.autor(),
-                acervoDTO.publicacao(),
-                categoriaService.findById(acervoDTO.categoria()));
-        return acervoRepository.save(acervo);
-    }
-
-    public Acervo editar(Long id, AcervoDTO acervoDTO) {
-        Acervo acervo = findById(id);
+    public Acervo manterAcervo(AcervoDTO acervoDTO) {
+        Acervo acervo = (acervoDTO.id() == null) ? new Acervo() : findById(acervoDTO.id());
         acervo.setTitulo(acervoDTO.titulo());
         acervo.setAutor(acervoDTO.autor());
         acervo.setPublicacao(acervoDTO.publicacao());
         acervo.setCategoria(categoriaService.findById(acervoDTO.categoria()));
+        acervo.setActive(acervoDTO.active());
         acervoRepository.save(acervo);
         return acervo;
     }
@@ -53,7 +45,7 @@ public class AcervoService {
     public Acervo isDisponivel(Long id) {
         Acervo acervo = acervoRepository.getAcervoByIdActive(id);
         if (acervo == null) {
-            throw new RuntimeException("Acervo não disponível!");
+            throw new RuntimeException("Acervo não disponível ou inexistente!");
         }
         return acervo;
     }
@@ -82,10 +74,6 @@ public class AcervoService {
     public Acervo setStatus(Acervo acervo, boolean status) {
         acervo.setActive(status);
         return acervoRepository.save(acervo);
-    }
-
-    public Acervo setStatusById(Long id, boolean status) {
-        return setStatus(findById(id), status);
     }
 
     public Acervo findById(Long id) {

@@ -37,9 +37,8 @@ public class UserService implements UserDetailsService {
     public User findByUsername(String username) {
         User user = userRepository.findByUsername(username);
         try {
-            if (user == null) {
+            if (user == null)
                 throw new UsernameNotFoundException("Usuário não encontrado pelo nome!");
-            }
         } catch (UsernameNotFoundException e) {
             logger.error(e.getMessage());
         }
@@ -66,29 +65,39 @@ public class UserService implements UserDetailsService {
                 .orElseThrow(() -> new ServiceException("Usuário não encontrado pelo Id!"));
     }
 
-    public User editar(UserDTO userDTO) {
-        User user = getUserLogado();
-        return manterUser(userDTO, user);
-    }
-
-    public User editarById(Long id, UserDTO userDTO) {
-        User user = findById(id);
-        return manterUser(userDTO, user);
-    }
-
-    private User manterUser(UserDTO userDTO, User user) {
-        user.setUsername(userDTO.username());
-        user.setEmail(userDTO.email());
-        user.setRole(userDTO.role());
-        user.setTelefone(userDTO.telefone());
-        logger.info("Id {} .: {} foi editado!", user.getId().toString(), user.getUsername());
+    public User manterUser(User tmp) {
+        User user = findById(tmp.getId());
+        user.setEmail(tmp.getEmail());
+        user.setTelefone(tmp.getTelefone());
+        user.setRole(tmp.getRole());
+        user.setActive(tmp.isActive());
+        loggerinfo(user);
         return userRepository.save(user);
     }
 
-    public String deletar() {
+    public User manterUser(UserDTO userDTO) {
         User user = getUserLogado();
+        user.setEmail(userDTO.email());
+        user.setTelefone(userDTO.telefone());
+        loggerinfo(user);
+        return userRepository.save(user);
+    }
+
+    private void loggerinfo(User user) {
+        logger.info("Id {} .: {} foi consultado!", user.getId().toString(), user.getUsername());
+    }
+
+    public String deletar() {
+        return delete(getUserLogado());
+    }
+
+    public String deletar(Long id) {
+        return delete(findById(id));
+    }
+
+    private String delete(User user) {
+        loggerinfo(user);
         userRepository.delete(user);
-        logger.info("{} foi apagado!", user.getUsername());
         return "redirect:/";
     }
 
@@ -101,9 +110,7 @@ public class UserService implements UserDetailsService {
 
     public User getUserLogado() {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        User user = findByUsername(username);
-        logger.info("Usuário .: {}", user.getUsername());
-        return user;
+        return findByUsername(username);
     }
 
 }

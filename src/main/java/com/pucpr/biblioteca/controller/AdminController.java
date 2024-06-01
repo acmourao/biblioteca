@@ -3,7 +3,6 @@ package com.pucpr.biblioteca.controller;
 import com.pucpr.biblioteca.dto.AcervoDTO;
 import com.pucpr.biblioteca.dto.LocacaoDTO;
 import com.pucpr.biblioteca.dto.MyUserDetails;
-import com.pucpr.biblioteca.dto.UserDTO;
 import com.pucpr.biblioteca.entity.Acervo;
 import com.pucpr.biblioteca.entity.Categoria;
 import com.pucpr.biblioteca.entity.Locacao;
@@ -33,34 +32,34 @@ public class AdminController {
     private AcervoService acervoService;
 
     @GetMapping("/user/all")
-    public ResponseEntity< Iterable<User> > consultaTodosUsuarios(){
+    public ResponseEntity<Iterable<User>> consultaTodosUsuarios() {
         Iterable<User> users = userService.findAllUsers();
         return ResponseEntity.ok(users);
     }
 
     @GetMapping("/user/detail/{idUser}")
-    public ResponseEntity<MyUserDetails> consultaDetailById(@PathVariable Long idUser){
-        return ResponseEntity.ok( userService.findUserDetailById(idUser) );
+    public ResponseEntity<MyUserDetails> consultaDetailById(@PathVariable Long idUser) {
+        return ResponseEntity.ok(userService.findUserDetailById(idUser));
     }
 
     @GetMapping("/user/bloquear/{idUser}")
-    public ResponseEntity<MyUserDetails> bloquearUserById(@PathVariable Long idUser){
-        return ResponseEntity.ok( userService.bloquearUserById(idUser) );
+    public ResponseEntity<MyUserDetails> bloquearUserById(@PathVariable Long idUser) {
+        return ResponseEntity.ok(userService.bloquearUserById(idUser));
     }
 
-    @GetMapping("/user/edit/{idUser}")
-    public ResponseEntity<User> editarUserPorId(@PathVariable Long idUser, @RequestBody UserDTO userDTO){
-         return ResponseEntity.ok( userService.editarById(idUser, userDTO) );
+    @PostMapping(value = "/user/edit", consumes = "application/json")
+    public ResponseEntity<User> editarUser(@RequestBody User user) {
+        return ResponseEntity.ok(userService.manterUser(user));
     }
 
-    @PostMapping("/categoria/add")
-    public ResponseEntity<Categoria> addCategoria(@RequestBody Categoria categoria) {
-        return ResponseEntity.ok( categoriaService.addCategoria(categoria) );
+    @PostMapping("/user/delete/{id}")
+    public @ResponseBody String deleteUser(@PathVariable Long id) {
+        return userService.deletar(id);
     }
 
-    @PostMapping("/categoria/edit")
-    public ResponseEntity<Categoria> editCategoria(@RequestBody Categoria categoria) {
-        return ResponseEntity.ok(categoriaService.editar(categoria));
+    @PostMapping("/categoria/manter")
+    public ResponseEntity<Categoria> manterCategoria(@RequestBody Categoria categoria) {
+        return ResponseEntity.ok(categoriaService.manterCategoria(categoria));
     }
 
     @PostMapping("/categoria/delete/{id}")
@@ -68,14 +67,9 @@ public class AdminController {
         return categoriaService.deletar(id);
     }
 
-    @PostMapping("/acervo/add")
+    @PostMapping("/acervo/manter")
     public ResponseEntity<Acervo> addAcervo(@RequestBody AcervoDTO acervoDTO) {
-        return ResponseEntity.ok( acervoService.add(acervoDTO) );
-    }
-
-    @PostMapping("/acervo/edit/{idAcervo}")
-    public ResponseEntity<Acervo> editAcervo(@PathVariable Long idAcervo, @RequestBody AcervoDTO acervoDTO) {
-        return ResponseEntity.ok(acervoService.editar(idAcervo, acervoDTO));
+        return ResponseEntity.ok(acervoService.manterAcervo(acervoDTO));
     }
 
     @PostMapping("/acervo/delete/{id}")
@@ -83,14 +77,14 @@ public class AdminController {
         return acervoService.deletar(id);
     }
 
-    @PostMapping("/acervo/emprestar")
+    @PostMapping("/locacao/emprestar")
     public ResponseEntity<Locacao> emprestarAcervo(@RequestBody LocacaoDTO locacaoDTO) {
-        return ResponseEntity.ok( locacaoService.emprestarAcervo(locacaoDTO) );
+        return ResponseEntity.ok(locacaoService.emprestarAcervo(locacaoDTO));
     }
 
-    @PostMapping("/acervo/devolver/{idAcervo}")
+    @PostMapping("/locacao/devolver/{idAcervo}")
     public ResponseEntity<Locacao> devolverAcervo(@PathVariable Long idAcervo) {
-        return ResponseEntity.ok( locacaoService.devolverAcervo(idAcervo) );
+        return ResponseEntity.ok(locacaoService.devolverAcervo(idAcervo));
     }
 
     @GetMapping("/locacao/pendentes")
@@ -109,7 +103,7 @@ public class AdminController {
     }
 
     @GetMapping("/locacao/user/{idUser}")
-    public ResponseEntity< Iterable<Locacao>> findLocacoesByUser(@PathVariable Long idUser) {
+    public ResponseEntity<Iterable<Locacao>> findLocacoesByUser(@PathVariable Long idUser) {
         return ResponseEntity.ok(locacaoService.findByUserId(idUser));
     }
 }

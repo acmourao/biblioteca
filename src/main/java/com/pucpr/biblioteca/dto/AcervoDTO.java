@@ -1,9 +1,11 @@
 package com.pucpr.biblioteca.dto;
 
 public record AcervoDTO(
-    String titulo,
-    String autor,
-    int categoria,
-    int publicacao
+        Long id,
+        String titulo,
+        String autor,
+        int categoria,
+        int publicacao,
+        boolean active
 ) {
 }

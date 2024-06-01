@@ -30,6 +30,7 @@ public class InitialConfig {
             userRepository.save(new User(
                     "administrador",
                     "$2a$10$xtfayZf0FXUuz2HdCAe/puvhcpEtierSF5wp4knBulreepSbRopP6",
+                    //"$2a$10$XhLvT0MbGECZ7E4cLemYdePBnZu8HPNlxWrjjKharAc9MUVMy.zL6",
                     "ROLE_ADMIN",
                     true,
                     "administrador@live.com",

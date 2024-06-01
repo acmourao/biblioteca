@@ -17,6 +17,7 @@ public class Acervo {
     }
 
     public Acervo() {
+        this.active = true;
     }
 
     @Id
@@ -32,7 +33,7 @@ public class Acervo {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnoreProperties(value = {"applications", "hibernateLazyInitializer"})
-//    @JsonIgnore
+
     private Categoria categoria;
 
     private Boolean active;
@@ -42,7 +43,8 @@ public class Acervo {
     }
 
     public void setId(Long id) {
-        this.id = id;
+        if (id != null)
+            this.id = id;
     }
 
     public String getTitulo() {
@@ -50,7 +52,8 @@ public class Acervo {
     }
 
     public void setTitulo(String titulo) {
-        this.titulo = titulo;
+        if (titulo != null)
+            this.titulo = titulo;
     }
 
     public String getAutor() {
@@ -58,7 +61,8 @@ public class Acervo {
     }
 
     public void setAutor(String autor) {
-        this.autor = autor;
+        if (autor != null)
+            this.autor = autor;
     }
 
     public int getPublicacao() {
@@ -66,7 +70,8 @@ public class Acervo {
     }
 
     public void setPublicacao(int publicacao) {
-        this.publicacao = publicacao;
+        if (publicacao != 0)
+            this.publicacao = publicacao;
     }
 
     public Categoria getCategoria() {
@@ -74,7 +79,8 @@ public class Acervo {
     }
 
     public void setCategoria(Categoria categoria) {
-        this.categoria = categoria;
+        if (categoria != null)
+            this.categoria = categoria;
     }
 
     public Boolean getActive() {
@@ -82,6 +88,7 @@ public class Acervo {
     }
 
     public void setActive(Boolean active) {
-        this.active = active;
+        if (active != null)
+            this.active = active;
     }
 }

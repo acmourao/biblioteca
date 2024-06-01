@@ -12,13 +12,7 @@ public class CategoriaService {
     @Autowired
     private CategoriaRepository categoriaRepository;
 
-    public Categoria addCategoria(Categoria categoria) {
-        return categoriaRepository.save(categoria);
-    }
-
-    public Categoria editar(Categoria temp) {
-        Categoria categoria = findById(temp.getId());
-        categoria.setTipo(temp.getTipo());
+    public Categoria manterCategoria(Categoria categoria) {
         return categoriaRepository.save(categoria);
     }
 
