@@ -48,7 +48,6 @@ public class InitialConfig {
                     "Cerbasi, Gustavo Petrasunas",
                     2010,
                     categoriaService.findById(1));
-            acervo2.setActive(false);
             acervoRepository.save(acervo2);
 
             Acervo acervo3 = new Acervo(

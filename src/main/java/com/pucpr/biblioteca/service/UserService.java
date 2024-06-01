@@ -55,6 +55,8 @@ public class UserService implements UserDetailsService {
 
     public MyUserDetails bloquearUserById(Long id) {
         User user = findById(id);
+        if (locacaoService.countByUser(user) > 0)
+            throw new RuntimeException("Usuário tem locação pendente, não pode ser bloqueado!");
         user.setActive(false);
         return new MyUserDetails(userRepository.save(user));
     }

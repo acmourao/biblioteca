@@ -27,7 +27,8 @@ public class AcervoService {
         acervo.setTitulo(acervoDTO.titulo());
         acervo.setAutor(acervoDTO.autor());
         acervo.setPublicacao(acervoDTO.publicacao());
-        acervo.setCategoria(categoriaService.findById(acervoDTO.categoria()));
+        if (acervoDTO.categoria() != 0)
+            acervo.setCategoria(categoriaService.findById(acervoDTO.categoria()));
         acervo.setActive(acervoDTO.active());
         acervoRepository.save(acervo);
         return acervo;

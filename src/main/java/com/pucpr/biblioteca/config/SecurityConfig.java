@@ -33,7 +33,7 @@ public class SecurityConfig {
     public SecurityFilterChain filterApiChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(auth -> auth
                 .requestMatchers(AUTH_WHITELIST).permitAll()
-                .requestMatchers(HttpMethod.GET, "/admin/**").hasRole("ADMIN")
+                .requestMatchers( "/admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
         );
         http.headers(headers -> headers.frameOptions().disable());

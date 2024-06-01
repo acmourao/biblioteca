@@ -37,7 +37,7 @@ public class LocacaoService {
     }
 
     public long countByUser(User user) {
-        return locacaoRepository.countByUser(user);
+        return locacaoRepository.countByUserAndActiveTrue(user);
     }
 
     public Iterable<Locacao> findByUserId(Long id) {
