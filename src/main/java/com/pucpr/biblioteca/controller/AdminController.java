@@ -42,7 +42,7 @@ public class AdminController {
         return ResponseEntity.ok(userService.findUserDetailById(idUser));
     }
 
-    @GetMapping("/user/bloquear/{idUser}")
+    @PostMapping("/user/bloquear/{idUser}")
     public ResponseEntity<MyUserDetails> bloquearUserById(@PathVariable Long idUser) {
         return ResponseEntity.ok(userService.bloquearUserById(idUser));
     }
